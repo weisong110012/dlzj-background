@@ -1,8 +1,8 @@
 {
-  "name": "吊篮百事通后台管理系统",
+  "name": "dlzj-background",
   "version": "4.4.0",
   "description": "吊篮百事通 & 后台管理系统",
-  "author": "Pan <panfree23@gmail.com>",
+  "author": "weisongsong",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
