@@ -1,30 +1,27 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">用户昵称: {{ name }}</div>
+  <div class="wrap">
+      <topPanel></topPanel>
+
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+  import topPanel from './components/topPanel'
+  export default {
+    components:{
+      topPanel
+    },
+    data() {
+      return {
 
-export default {
-  name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
-  }
-}
+      };
+    }
+  };
 </script>
-
 <style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
+  .wrap {
+    padding: 32px;
+    background-color: rgb(240, 242, 245);
+    position: relative;
   }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
 </style>

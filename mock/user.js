@@ -8,47 +8,7 @@ const tokens = {
   }
 }
 
-let testRoutes=[
-    {
-        "path": "",
-        "component": "layout/Layout",
-        "redirect": "dashboard",
-        "children": [
-            {
-                "path": "/dashboard",
-                "component": "views/dashboard/index",
-                "name": "Dashboard",
-                "meta": {
-                    "title": "首页",
-                    "icon": "dashboard",
-                    "affix": true
-                }
-            }
-        ]
-    },
-    {
-      path: '/example',
-      "component": "layout/Layout",
-      redirect: '/example/table',
-      name: 'Example',
-      meta: { title: '例子', icon: 'el-icon-s-help' },
-      children: [
-        {
-          path: 'table',
-          name: 'Table',
-          component: 'views/table/index',
-          meta: { title: '表格', icon: 'table' },
-          hidden:false
-        },
-        {
-          path: 'tree',
-          name: 'Tree',
-          component: 'views/tree/index',
-          meta: { title: '树', icon: 'tree' }
-        }
-      ]
-    },
-]
+let testRoutes=require('../src/router/setting.js')
 
 const users = {
   'admin-token': {
