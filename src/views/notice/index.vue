@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-row style="text-align: right;padding-bottom: 18px;">
         <template v-if="device!=='mobile'">
-          <el-input placeholder="请输入公告名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;">
+          <el-input v-model="searchName" placeholder="请输入公告名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;">
           </el-input>
         </template>
         <el-button type="primary">新增公告</el-button>
@@ -74,7 +74,8 @@
     data() {
       return {
         list: null,
-        listLoading: true
+        listLoading: true,
+        searchName:''
       }
     },
     created() {
