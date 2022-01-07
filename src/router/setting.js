@@ -1,4 +1,4 @@
-module.exports=[
+const routes=[
     {
         "path": "",
         "component": "layout/Layout",
@@ -49,64 +49,6 @@ module.exports=[
       ]
     },
     {
-      path: '/yeuw',
-      "component": "layout/Layout",
-      name: 'yeuw',
-      meta: { title: '业务管理', icon: 'el-icon-setting' },
-      children: [
-        {
-          path: 'order',
-          name: 'order',
-          component: 'views/user/index',
-          meta: { title: '订单管理', icon: 'el-icon-user' },
-          hidden:false
-        },
-        {
-          path: 'demand',
-          name: 'demand',
-          component: 'views/admin/index',
-          meta: { title: '需求管理', icon: 'el-icon-s-custom' },
-          hidden:false
-        },
-        {
-          path: 'document',
-          name: 'document',
-          component: 'views/admin/index',
-          meta: { title: '文档管理', icon: 'el-icon-s-custom' },
-          hidden:false
-        }
-      ]
-    },
-    {
-      path: '/kaoshi',
-      "component": "layout/Layout",
-      name: 'kaoshi',
-      meta: { title: '考试管理', icon: 'el-icon-setting' },
-      children: [
-        {
-          path: 'examination',
-          name: 'examination',
-          component: 'views/user/index',
-          meta: { title: '报名管理', icon: 'el-icon-user' },
-          hidden:false
-        },
-        {
-          path: 'question',
-          name: 'question',
-          component: 'views/admin/index',
-          meta: { title: '试题管理', icon: 'el-icon-s-custom' },
-          hidden:false
-        },
-        {
-          path: 'video',
-          name: 'video',
-          component: 'views/admin/index',
-          meta: { title: '学习视频管理', icon: 'el-icon-s-custom' },
-          hidden:false
-        }
-      ]
-    },
-    {
       path: '/system',
       "component": "layout/Layout",
       name: 'system',
@@ -115,31 +57,26 @@ module.exports=[
         {
           path: 'user',
           name: 'user',
-          component: 'views/user/index',
+          component: 'views/system/user/index',
           meta: { title: '用户管理', icon: 'el-icon-user' },
           hidden:false
         },
         {
           path: 'admin',
           name: 'admin',
-          component: 'views/admin/index',
+          component: 'views/system/admin/index',
           meta: { title: '管理员管理', icon: 'el-icon-s-custom' },
           hidden:false
         },
         {
           path: 'role',
           name: 'role',
-          component: 'views/admin/index',
+          component: 'views/system/role/index',
           meta: { title: '角色管理', icon: 'el-icon-s-custom' },
-          hidden:false
-        },
-        {
-          path: 'auth',
-          name: 'auth',
-          component: 'views/admin/index',
-          meta: { title: '权限管理', icon: 'el-icon-s-custom' },
           hidden:false
         }
       ]
     },
 ]
+
+module.exports=routes;
