@@ -1,22 +1,5 @@
 const routes=[
     {
-        "path": "",
-        "component": "layout/Layout",
-        "redirect": "dashboard",
-        "children": [
-            {
-                "path": "/dashboard",
-                "component": "views/dashboard/index",
-                "name": "Dashboard",
-                "meta": {
-                    "title": "首页",
-                    "icon": "dashboard",
-                    "affix": true
-                }
-            }
-        ]
-    },
-    {
       path: '/notice',
       "component": "layout/Layout",
       redirect: '/notice/notice',
