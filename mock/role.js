@@ -16,10 +16,12 @@ module.exports = [
       const items = data.items
       return {
         code: 20000,
-        data: items,
-        total: items.length*2,
-        pageNum:1,
-        pageSize:10
+        msg:'请求成功',
+        data:{
+          data: items,
+          total: items.length*2,
+          current_page:1
+        }
       }
     }
   }

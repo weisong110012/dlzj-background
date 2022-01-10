@@ -110,7 +110,7 @@
         dialogType: 'add',
         pagination: {
           total: 0,
-          pageSize: 0,
+          pageSize: 10,
           pageNum: 0
         }
       }
@@ -188,10 +188,9 @@
       fetchData() {
         this.listLoading = true
         getList().then(response => {
-          this.list = response.data
-          this.pagination.total = response.total
-          this.pagination.pageNum = response.pageNum
-          this.pagination.pageSize = response.pageSize
+          this.list = response.data.data
+          this.pagination.total = response.data.total
+          this.pagination.pageNum = response.data.current_page
           this.listLoading = false
         })
       },

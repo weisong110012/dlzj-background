@@ -4,11 +4,11 @@
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
-            <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+            <svg-icon icon-class="daiban" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">
-              注册人数
+              我的待办
             </div>
             <div class="card-panel-num">
               56
@@ -19,11 +19,11 @@
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-shopping">
-            <svg-icon icon-class="zhucherenshu" class-name="card-panel-icon" />
+            <svg-icon icon-class="yiban" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">
-              报名人数
+              我的已办
             </div>
             <div class="card-panel-num">
               75
@@ -34,11 +34,11 @@
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-message">
-            <svg-icon icon-class="message" class-name="card-panel-icon" />
+            <svg-icon icon-class="xinjian" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">
-              消息
+              今日新建
             </div>
             <div class="card-panel-num">
               10
@@ -49,11 +49,11 @@
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-money">
-            <svg-icon icon-class="money" class-name="card-panel-icon" />
+            <svg-icon icon-class="shenpi" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">
-              收入
+              审批互动
             </div>
             <div class="card-panel-num">
               4000
