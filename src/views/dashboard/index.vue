@@ -43,7 +43,7 @@
                     <svg-icon icon-class="baoming"></svg-icon>
                   </p>
                   <p class="item_name">
-                     报名管理
+                     用户管理
                   </p>
                 </li>
                 <li class="changyong_item">
@@ -51,7 +51,7 @@
                       <svg-icon icon-class="baoming"></svg-icon>
                   </p>
                   <p class="item_name">
-                     报名管理
+                     管理员管理
                   </p>
                 </li>
               </ul>
