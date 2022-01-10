@@ -17,6 +17,7 @@
                 <p>
                   你好, {{name}}!
                 </p>
+                <el-divider></el-divider>
                 <p>
                   吊篮百事通管理平台是一款集请假审批、系统管理、APP和小程序管理一体的综合管理平台。
                 </p>
@@ -25,7 +26,7 @@
           </div>
         </el-card>
 
-        <el-card class="box-card" style="margin-top: 20px;" v-if='!!(filterRoutes.length)'>
+        <el-card class="box-card" v-if='!!(filterRoutes.length)'>
           <div slot="header" class="clearfix">
             <span>常用功能</span>
           </div>
@@ -58,8 +59,10 @@
               <el-timeline-item timestamp="2022/3/1" placement="top">
                 <el-card>
                   <h4>发布管理平台v1.0.0</h4>
-                  <p>优化管理后台</p>
+                  <p>优化考试报名模块</p>
+                  <p>优化公告管理模块</p>
                   <p>增加用户权限模块</p>
+                  <p>优化系统管理模块</p>
                 </el-card>
               </el-timeline-item>
               <el-timeline-item timestamp="2022/4/1" placement="top">
@@ -67,7 +70,6 @@
                   <h4>发布管理平台v1.1.0</h4>
                   <p>优化管理后台</p>
                   <p>增加组织架构管理模块</p>
-                  <p>优化考试管理模块</p>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -131,7 +133,9 @@
     padding: 32px;
     background-color: rgb(240, 242, 245);
     position: relative;
-
+    .box-card{
+      margin-top: 20px;
+    }
     .changyong_wrap {
       list-style: none;
       padding: 0;
