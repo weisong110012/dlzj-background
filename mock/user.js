@@ -28,7 +28,7 @@ const users = {
 module.exports = [
   // user login
   {
-    url: '/vue-admin-template/user/login',
+    url: '/Login/accoutLogin',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -38,7 +38,7 @@ module.exports = [
       if (!token) {
         return {
           code: 60204,
-          message: 'Account and password are incorrect.'
+          message: '账号或者密码错误！'
         }
       }
 
@@ -61,7 +61,7 @@ module.exports = [
       if (!info) {
         return {
           code: 50008,
-          message: 'Login failed, unable to get user details.'
+          message: '登录失败！'
         }
       }
 
