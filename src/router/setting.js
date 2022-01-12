@@ -1,9 +1,9 @@
 const routes=[
     {
-      path: '/notice',
+      path: '/noticeMange',
       "component": "layout/Layout",
-      redirect: '/notice/notice',
-      name: 'notice',
+      redirect: '/noticeMange/notice',
+      name: 'noticeMange',
       meta: { title: '公告管理', icon: 'el-icon-postcard' },
       children: [
         {
@@ -16,10 +16,10 @@ const routes=[
       ]
     },
     {
-      path: '/order',
+      path: '/orderMange',
       "component": "layout/Layout",
-      redirect: '/order/order',
-      name: 'order',
+      redirect: '/orderMange/order',
+      name: 'orderMange',
       meta: { title: '订单管理', icon: 'el-icon-s-order' },
       children: [
         {
