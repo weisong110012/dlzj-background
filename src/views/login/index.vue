@@ -9,7 +9,7 @@
           <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
             label-position="left">
             <div class="title-container">
-              <h3 class="title">吊篮百事通后台管理系统</h3>
+              <h3 class="title"> <img src="@/assets/images/login/logo.png" >吊篮百事通后台管理系统</h3>
             </div>
             <el-form-item prop="username">
               <span class="svg-container">
@@ -205,7 +205,7 @@
         align-items: center;
         justify-content: center;
         background: rgb(25,28,55);
-        border-radius: 10px;
+        border-radius: 18px;
         max-width: 100%;
       }
     }
@@ -221,7 +221,7 @@
       position: relative;
       width: 520px;
       max-width: 90%;
-      padding: 50px 35px 40px;
+      padding: 0px 35px;
       margin: 0 auto;
       float: right;
       overflow: hidden;
@@ -256,6 +256,12 @@
         margin: 0px auto 40px auto;
         text-align: center;
         font-weight: bold;
+        line-height: 40px;
+        img{
+          width: 40px;
+          vertical-align: bottom;
+          margin-right: 6px;
+        }
       }
     }
 
@@ -273,6 +279,9 @@
   @media screen and (max-width: 600px) {
       .login-left{
         display: none;
+      }
+      .box-wrap{
+        background: $bg !important;
       }
   }
 </style>
