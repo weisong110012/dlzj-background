@@ -38,7 +38,7 @@
         </el-pagination>
       </div>
     </el-card>
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑角色':'新增角色'">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑角色':'新增角色'" :fullscreen="device=='mobile'">
       <el-form :model="role" label-width="80px" label-position="left">
         <el-form-item label="角色名称">
           <el-input v-model="role.roleName" placeholder="请输入角色名称" />

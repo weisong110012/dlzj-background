@@ -10,23 +10,23 @@ const routes=[
           path: 'notice',
           name: 'notice',
           component: 'views/notice/index',
-          meta: { title: '公告列表', icon: 'el-icon-postcard' },
+          meta: { title: '公告管理', icon: 'el-icon-postcard' },
           hidden:false
         }
       ]
     },
     {
-      path: '/message',
+      path: '/order',
       "component": "layout/Layout",
-      redirect: '/message/message',
-      name: 'message',
-      meta: { title: '通知管理', icon: 'el-icon-s-comment' },
+      redirect: '/order/order',
+      name: 'order',
+      meta: { title: '订单管理', icon: 'el-icon-s-order' },
       children: [
         {
-          path: 'message',
-          name: 'message',
-          component: 'views/message/index',
-          meta: { title: '通知列表', icon: 'el-icon-s-comment' },
+          path: 'order',
+          name: 'order',
+          component: 'views/order/index',
+          meta: { title: '订单管理', icon: 'el-icon-s-order' },
           hidden:false
         }
       ]
