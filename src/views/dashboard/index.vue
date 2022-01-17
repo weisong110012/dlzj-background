@@ -87,13 +87,13 @@
     mapGetters
   } from 'vuex'
   let changyongList = [{
-    path: '/notice'
+    path: '/noticeMange'
   }, {
     path: '/system'
   }, {
     path: '/kaoshi'
   }, {
-    path: '/system'
+    path: '/test'
   }]
 
   export default {

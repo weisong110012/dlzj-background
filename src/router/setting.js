@@ -32,7 +32,7 @@ const routes=[
       ]
     },
     {
-      path: '/user',
+      path: '/system',
       "component": "layout/Layout",
       name: 'system',
       meta: { title: '系统管理', icon: 'el-icon-setting' },
