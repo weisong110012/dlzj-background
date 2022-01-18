@@ -32,6 +32,93 @@ const routes=[
       ]
     },
     {
+      path: '/demandMange',
+      "component": "layout/Layout",
+      redirect: '/demandMange/demand',
+      name: 'demandMange',
+      meta: { title: '需求管理', icon: 'el-icon-s-comment' },
+      children: [
+        {
+          path: 'demand',
+          name: 'demand',
+          component: 'views/demand/index',
+          meta: { title: '需求管理', icon: 'el-icon-s-comment' },
+          hidden:false
+        }
+      ]
+    },
+    {
+      path: '/examMange',
+      "component": "layout/Layout",
+      redirect: '/examMange/exam',
+      name: 'examMange',
+      meta: { title: '考试管理', icon: 'el-icon-notebook-1' },
+      children: [
+        {
+          path: 'exam',
+          name: 'exam',
+          component: 'views/exam/index',
+          meta: { title: '考试报名', icon: 'el-icon-s-claim' },
+          hidden:false
+        },
+        {
+          path: 'testquestions',
+          name: 'testquestions',
+          component: 'views/testquestions/index',
+          meta: { title: '试题管理', icon: 'el-icon-tickets' },
+          hidden:false
+        }
+      ]
+    },
+    {
+      path: '/documentMange',
+      "component": "layout/Layout",
+      redirect: '/documentMange/demand',
+      name: 'documentMange',
+      meta: { title: '文档管理', icon: 'el-icon-document' },
+      children: [
+        {
+          path: 'document',
+          name: 'document',
+          component: 'views/document/index',
+          meta: { title: '文档管理', icon: 'el-icon-document' },
+          hidden:false
+        }
+      ]
+    },
+    {
+      path: '/videoMange',
+      "component": "layout/Layout",
+      redirect: '/videoMange/demand',
+      name: 'videoMange',
+      meta: { title: '视频管理', icon: 'el-icon-video-play' },
+      children: [
+        {
+          path: 'video',
+          name: 'video',
+          component: 'views/video/index',
+          meta: { title: '视频管理', icon: 'el-icon-video-play' },
+          hidden:false
+        }
+      ]
+    },
+    {
+      path: '/bannerMange',
+      "component": "layout/Layout",
+      redirect: '/bannerMange/demand',
+      name: 'bannerMange',
+      meta: { title: '轮播图管理', icon: 'el-icon-picture' },
+      children: [
+        {
+          path: 'banner',
+          name: 'banner',
+          component: 'views/banner/index',
+          meta: { title: '轮播图管理', icon: 'el-icon-picture' },
+          hidden:false
+        }
+      ]
+    },
+    {
       path: '/system',
       "component": "layout/Layout",
       name: 'system',

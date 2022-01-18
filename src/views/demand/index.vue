@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-row style="text-align: right;padding-bottom: 18px;">
         <template v-if="device!=='mobile'">
-          <el-input placeholder="请输入订单名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;">
+          <el-input placeholder="请输入需求名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;">
           </el-input>
         </template>
         <el-button type="danger">删除</el-button>
@@ -11,29 +11,29 @@
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
         <el-table-column type="selection" width="65" align="center">
         </el-table-column>
-        <el-table-column label="订单标题" align="center" width="150">
+        <el-table-column label="需求标题" align="center" width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.author }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="发布类型" align="center" width="100">
+        <el-table-column label="供需类型" align="center" width="100">
           <template slot-scope="scope">
             <span>{{ scope.row.author }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="订单类型" align="center" width="100">
+        <el-table-column label="吊篮数量" align="center" width="100">
           <template slot-scope="scope">
-            <span>{{ scope.row.author }}</span>
+            <span>99</span>
           </template>
         </el-table-column>
-        <el-table-column label="订单接取人" align="center" width="150">
+        <el-table-column label="吊篮单价" align="center" width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.author }}</span>
+            <span>12</span>
           </template>
         </el-table-column>
-        <el-table-column class-name="status-col" label="订单状态" align="center" width="150">
+        <el-table-column class-name="status-col" label="是否面议" align="center" width="150">
           <template slot-scope="scope">
-            <el-tag type="success">已发布</el-tag>
+            <el-tag type="success">面议</el-tag>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="创建时间"  width="250">
