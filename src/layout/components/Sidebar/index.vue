@@ -1,7 +1,7 @@
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <div style="height: 100%;overflow: auto;overflow-x: hidden;">
+    <div style="height: 93%;overflow: auto;overflow-x: hidden;">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
