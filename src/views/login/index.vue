@@ -283,5 +283,15 @@
       .box-wrap{
         background: $bg !important;
       }
+      .login-right {
+        width: 100%;
+      }
+      .login-container .login-form {
+        position: relative;
+        max-width: 100%;
+        padding: 0px 10px;
+        margin: 0 auto;
+        overflow: hidden;
+      }
   }
 </style>
