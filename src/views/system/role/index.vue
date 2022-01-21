@@ -227,7 +227,7 @@
 </script>
 <style lang="scss" scoped>
   .wrap {
-    padding: 20px;
+    padding: 10px;
     background-color: rgb(240, 242, 245);
     position: relative;
   }
