@@ -139,6 +139,13 @@ const routes=[
           hidden:false
         },
         {
+          path: 'user',
+          name: 'user',
+          component: 'views/system/user/index',
+          meta: { title: '用户管理', icon: 'el-icon-s-custom' },
+          hidden:false
+        },
+        {
           path: 'admin',
           name: 'admin',
           component: 'views/system/admin/index',
