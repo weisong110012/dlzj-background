@@ -15,7 +15,7 @@
       </el-row>
 
       <el-row>
-        <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col" v-for='i in 3' :key='i'>
+        <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col" v-for="i in 3" :key="i">
           <div class="card-panel">
             <div class="header">
               <el-image
@@ -161,10 +161,14 @@ export default {
   .card-panel {
     position: relative;
     height: 350px;
-    box-shadow: 0px 5px 10px #ccc;
+    box-shadow: 0px 2px 10px #ccc;
     border-radius: 6px;
     overflow: hidden;
     margin: 10px;
+    transition: all 100ms linear;
+    &:hover {
+      box-shadow: 0px 1px 4px #ddd;
+    }
     .header {
       .header-img {
         width: 100%;
@@ -172,12 +176,13 @@ export default {
       }
     }
     .body {
+      cursor: default;
       margin-bottom: 8px;
       .title {
         font-size: 16px;
         font-weight: bold;
         padding: 5px 10px;
-        border-bottom: 1px dashed #ddd;
+        border-bottom: 1px dashed #eee;
         color: #555;
       }
       .body {
@@ -204,7 +209,7 @@ export default {
       }
     }
     .footer {
-      border-top: 1px dashed #ccc;
+      border-top: 1px dashed #eee;
       display: flex;
       padding: 7px 10px;
       justify-content: flex-end;
