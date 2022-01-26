@@ -84,8 +84,10 @@
       overflow: hidden;
       color: #666;
       background: #fff;
-      box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+      // box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
       border-color: rgba(0, 0, 0, .05);
+      box-shadow:0 -5px 0 rgba(226,226,230,.8),3px 6px 10px #ccc;
+      border-radius: 8px;
 
       &:hover {
         .card-panel-icon-wrapper {

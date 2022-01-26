@@ -10,10 +10,9 @@
           />
         </template>
         <el-button type="primary">新增公司</el-button>
-        <el-button type="danger">删除</el-button>
       </el-row>
       <el-row>
-        <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col" v-for='i in 10' :key='i'>
+        <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col" v-for='i in 8' :key='i'>
           <div class="card-panel">
             <div class="panel front">
               <div class="header"><div class="title">无锡雄宇重工有限公司</div></div>
@@ -115,8 +114,9 @@ export default {
 
   .card-panel {
     position: relative;
-    height: 400px;
+    height: 350px;
     perspective: 1000px;
+    cursor: pointer;
     .panel {
       position: absolute;
       left: 10px;
@@ -134,14 +134,14 @@ export default {
       background: #fff;
       background-size: 100% 100%;
       .header {
-        height: 200px;
+        height: 150px;
         background: linear-gradient(135deg, rgb(53, 138, 255), rgb(60, 108, 254));
         .title {
           font-size: 22px;
           color: #fff;
           text-shadow: 0px 0px 5px #fff;
           text-align: center;
-          line-height: 200px;
+          line-height: 150px;
           white-space: nowrap;
         }
       }
