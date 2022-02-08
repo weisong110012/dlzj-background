@@ -129,7 +129,7 @@ const routes=[
           name: 'user',
           component: 'views/system/user/index',
           meta: { title: '用户管理', icon: 'el-icon-user' },
-          hidden:false
+          hidden:true
         },
         {
           path: 'group',

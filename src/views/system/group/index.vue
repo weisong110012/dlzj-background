@@ -1,70 +1,28 @@
 <template>
   <div class="wrap">
-    <el-card class="box-card">
-      <el-row style="text-align: right;padding-bottom: 18px;">
-        <template v-if="device !== 'mobile'">
-          <el-input
-            placeholder="请输入公司名称"
-            prefix-icon="el-icon-search"
-            style="display: inline-block;width: 250px;margin-right: 12px;"
-          />
-        </template>
-        <el-button type="primary">新增公司</el-button>
-      </el-row>
-      <el-row>
-        <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col" v-for='i in 8' :key='i'>
-          <div class="card-panel">
-            <div class="panel front">
-              <div class="header"><div class="title">无锡雄宇重工有限公司</div></div>
-              <div class="footer">
-                <ul class="group-info">
-                  <li class="title">
-                    公司信息
-                  </li>
-                  <li class="info">
-                    <span>
-                      名称:
-                    </span>
-                    <span>
-                      无锡雄宇重工有限公司
-                    </span>
-                  </li>
-                  <li class="info">
-                    <span>
-                      地址:
-                    </span>
-                    <span>
-                      江苏省无锡市滨湖区小园三村66号
-                    </span>
-                  </li>
-                  <li class="info">
-                    <span>
-                      创建人:
-                    </span>
-                    <span>
-                      沈斌
-                    </span>
-                  </li>
-                  <li class="info">
-                    <span>
-                      创建时间:
-                    </span>
-                    <span>
-                      2022-01-21
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="panel back">
-              <button class="btn">管理</button>
-              <button class="btn">编辑</button>
-              <button class="btn delete">删除</button>
-            </div>
+    <el-row style="text-align: right;padding: 10px;background: #fff;">
+      <template v-if="device !== 'mobile'">
+        <el-input placeholder="请输入公司名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" />
+      </template>
+      <el-button type="primary">新增公司</el-button>
+      <el-button type="danger">删除</el-button>
+    </el-row>
+
+    <el-row>
+      <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
+        <div class="card-panel">
+          <div class="panel front">
+            <div class="title">雄宇集团</div>
+            <div class="title">1</div>
           </div>
-        </el-col>
-      </el-row>
-    </el-card>
+          <div class="panel back">
+            <button class="btn">管理</button>
+            <button class="btn">编辑</button>
+            <button class="btn delete">删除</button>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -114,9 +72,9 @@ export default {
 
   .card-panel {
     position: relative;
-    height: 350px;
+    height: 400px;
     perspective: 1000px;
-    cursor: pointer;
+
     .panel {
       position: absolute;
       left: 10px;
@@ -127,46 +85,11 @@ export default {
       transition: ease-in-out 600ms;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0px 6px 18px 0 rgba(0, 0, 0, 0.19);
     }
 
     .front {
-      background: #fff;
+      background: url('~@/assets/images/group/group_front.png') no-repeat;
       background-size: 100% 100%;
-      .header {
-        height: 150px;
-        background: linear-gradient(135deg, rgb(53, 138, 255), rgb(60, 108, 254));
-        .title {
-          font-size: 22px;
-          color: #fff;
-          text-shadow: 0px 0px 5px #fff;
-          text-align: center;
-          line-height: 150px;
-          white-space: nowrap;
-        }
-      }
-      .footer{
-        padding: 10px;
-        .group-info{
-          list-style: none;
-          text-align: left;
-          margin: 0;
-          padding: 0;
-          .title{
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-          }
-          .info{
-            margin-top: 14px;
-            font-size: 14px;
-            color:#666;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        }
-      }
     }
 
     .back {

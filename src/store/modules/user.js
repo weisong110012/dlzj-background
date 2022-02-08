@@ -34,8 +34,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', data)
+        setToken(data)
         resolve()
       }).catch(error => {
         reject(error)
@@ -51,10 +51,16 @@ const actions = {
         if (!data) {
           return reject('获取用户信息失败！请重新登录.')
         }
-        const { name, avatar } = data
+        let result={
+          name:data.role.role_name,
+          permission:JSON.parse(data.role.permission),
+          avatar:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+        }
+
+        const { name, avatar } = result
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        resolve(data)
+        resolve(result)
       }).catch(error => {
         reject(error)
       })
