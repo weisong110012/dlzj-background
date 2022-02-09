@@ -2,35 +2,35 @@ import request from '@/utils/request'
 
 export function getList(data) {
   return request({
-    url: '/role/index',
+    url: '/admin/index',
     method: 'post',
     data
   })
 }
 export function add(data) {
   return request({
-    url: '/role/add',
+    url: '/admin/add',
     method: 'post',
     data
   })
 }
 export function remove(data) {
   return request({
-    url: '/role/remove',
+    url: '/admin/remove',
     method: 'post',
     data
   })
 }
 export function edit(data) {
   return request({
-    url: '/role/edit',
+    url: '/admin/edit',
     method: 'post',
     data
   })
 }
 export function getdetail(data) {
   return request({
-    url: '/role/detail',
+    url: '/admin/detail',
     method: 'post',
     data
   })
