@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="角色">
           <template slot-scope="scope">
-            <span>{{ scope.row.role.role_name }}</span>
+            <span>{{ scope.row.role?scope.row.role.role_name:'--' }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="创建时间">

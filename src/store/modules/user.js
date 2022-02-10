@@ -56,7 +56,6 @@ const actions = {
           permission:JSON.parse(JSON.stringify(data.role.permission)),
           avatar:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
         }
-        console.log(result)
         const { name, avatar } = result
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)

@@ -17,10 +17,10 @@
 
     <div class="user-bio">
       <div class="user-education user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>教育</span></div>
+        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>备注</span></div>
         <div class="user-bio-section-body">
           <div class="text-muted">
-            我是一个测试
+            {{ user.name }}
           </div>
         </div>
       </div>

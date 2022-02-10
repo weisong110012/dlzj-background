@@ -36,9 +36,9 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="200">
-          <template slot-scope="scope">
+          <template v-if="scope.row.id!=1" slot-scope="scope">
             <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;" @click="handleEditClick(scope.row)">编辑</el-link>
-            <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.id])">删除</el-link>
+            <el-link v-if="scope.row.id!=2" type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.id])">删除</el-link>
           </template>
         </el-table-column>
       </el-table>

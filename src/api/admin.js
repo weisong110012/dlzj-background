@@ -28,6 +28,13 @@ export function edit(data) {
     data
   })
 }
+export function editPassword(data) {
+  return request({
+    url: '/admin/editPassword',
+    method: 'post',
+    data
+  })
+}
 export function getdetail(data) {
   return request({
     url: '/admin/detail',
