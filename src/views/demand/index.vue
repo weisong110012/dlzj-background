@@ -2,117 +2,133 @@
   <div class="wrap">
     <el-card class="box-card">
       <el-row style="text-align: right;padding-bottom: 18px;">
-        <template v-if="device!=='mobile'">
-          <el-input placeholder="请输入需求名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;">
-          </el-input>
+        <template v-if="device !== 'mobile'">
+          <el-input v-model="in_search" placeholder="请输入订单名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
         <el-button type="danger">删除</el-button>
       </el-row>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-        <el-table-column type="selection" width="65" align="center">
-        </el-table-column>
-        <el-table-column label="需求标题" align="center" width="150">
+        <el-table-column type="selection" width="65" align="center" />
+        <el-table-column label="供需内容" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.author }}</span>
+            <span>{{ scope.row.title }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="供需类型" align="center" width="100">
+        <el-table-column align="center" prop="created_at" label="供需类型">
           <template slot-scope="scope">
-            <span>{{ scope.row.author }}</span>
+            <span>{{ scope.row.type }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="吊篮数量" align="center" width="100">
+        <el-table-column align="center" prop="created_at" label="吊篮数量">
           <template slot-scope="scope">
-            <span>99</span>
+            <span>{{ scope.row.basket_count }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="吊篮单价" align="center" width="150">
+        <el-table-column align="center" prop="created_at" label="吊篮单价">
           <template slot-scope="scope">
-            <span>12</span>
+            <span>{{ scope.row.basket_price }}</span>
           </template>
         </el-table-column>
-        <el-table-column class-name="status-col" label="是否面议" align="center" width="150">
+        <el-table-column align="center" prop="created_at" label="是否面议">
           <template slot-scope="scope">
-            <el-tag type="success">面议</el-tag>
+            <span>{{ scope.row.is_discuss?'是':'否' }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="created_at" label="创建时间"  width="250">
+        <el-table-column align="center" prop="created_at" label="联系人">
           <template slot-scope="scope">
-            <i class="el-icon-time" />
-            <span>{{ scope.row.display_time }}</span>
+            <span>{{ scope.row.contacts }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="created_at" label="接取时间"  width="250">
+        <el-table-column align="center" prop="created_at" label="联系电话" width="150">
           <template slot-scope="scope">
-            <i class="el-icon-time" />
-            <span>{{ scope.row.display_time }}</span>
+            <span>{{ scope.row.contacts_phone }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="100">
+        <el-table-column align="center" prop="created_at" label="创建人">
           <template slot-scope="scope">
-            <el-link type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
+            <span>{{ scope.row.create_user }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="created_at" label="创建时间" width="200">
+          <template slot-scope="scope">
+            <span>{{ scope.row.create_time }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="200">
+          <template slot-scope="scope">
+            <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.demand_id])">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
-      <!-- <div style="text-align: center;margin-top: 10px;">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="1000">
-        </el-pagination>
-      </div> -->
+      <div style="text-align: center;margin-top: 10px;">
+        <el-pagination background hide-on-single-page :page-size="pagination.pageSize" :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total" />
+      </div>
     </el-card>
-
-
   </div>
 </template>
 
 <script>
-  import {
-    getList
-  } from '@/api/table'
-  import { mapGetters } from 'vuex'
+import { getList, add, getdetail, edit, remove } from '@/api/demand'
+import { mapGetters } from 'vuex'
 
-  export default {
-    computed: {
-        ...mapGetters([
-          'device'
-        ])
-      },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        }
-        return statusMap[status]
-      }
-    },
-    data() {
-      return {
-        list: null,
-        listLoading: true
-      }
-    },
-    created() {
-      this.fetchData()
-    },
-    methods: {
-      fetchData() {
-        this.listLoading = true
-        getList().then(response => {
-          this.list = response.data.items
-          this.listLoading = false
-        })
+const defaultModel = {
+  account: '',
+  role_id: ''
+}
+
+export default {
+  computed: {
+    ...mapGetters(['device'])
+  },
+  data() {
+    return {
+      in_search: '',
+      list: null,
+      roleList: null,
+      listLoading: true,
+      addModel: Object.assign({}, defaultModel),
+      dialogVisible: false,
+      dialogType: 'add',
+      pagination: {
+        total: 0,
+        pageSize: 10,
+        pageNum: 1
       }
     }
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      this.listLoading = true
+      getList({ in_search: this.in_search, page: this.pagination.pageNum, page_size: this.pagination.pageSize }).then(response => {
+        this.list = response.data.data
+        this.pagination.total = response.data.total
+        this.pagination.pageNum = response.data.current_page
+        this.listLoading = false
+      })
+    },
+    handleDeleteClick(demand_id) {
+      remove({ demand_id: demand_id.join(',') }).then(response => {
+        if (response.code != 200) {
+          Message({
+            message: res.msg || 'Error',
+            type: 'error',
+            duration: 5 * 1000
+          })
+        } else {
+          this.fetchData()
+        }
+      })
+    }
   }
+}
 </script>
 <style lang="scss" scoped>
-  .wrap {
-    padding: 20px;
-    background-color: rgb(240, 242, 245);
-    position: relative;
-  }
+.wrap {
+  padding: 10px;
+  background-color: rgb(240, 242, 245);
+  position: relative;
+}
 </style>

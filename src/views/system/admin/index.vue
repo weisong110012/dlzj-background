@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-row style="text-align: right;padding-bottom: 18px;">
         <template v-if="device !== 'mobile'">
-          <el-input v-model="in_search" placeholder="请输入管理员名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" />
+          <el-input v-model="in_search" placeholder="请输入管理员名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
         <el-button type="primary" @click="handleAddClick">新增管理员</el-button>
         <el-button type="danger">删除</el-button>
@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import path from 'path'
-import { deepClone } from '@/utils'
 import { getList, add, getdetail, edit, remove } from '@/api/admin'
 import { getList as getRoleList } from '@/api/role'
 import { mapGetters } from 'vuex'
@@ -79,7 +77,7 @@ export default {
       pagination: {
         total: 0,
         pageSize: 10,
-        pageNum: 0
+        pageNum: 1
       }
     }
   },
