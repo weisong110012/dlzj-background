@@ -2,42 +2,35 @@ import request from '@/utils/request'
 
 export function getList(data) {
   return request({
-    url: '/examination/index',
+    url: '/document/index',
     method: 'post',
     data
   })
 }
-export function getCreateList(data) {
+export function add(data) {
   return request({
-    url: '/examination/indexCreate',
-    method: 'post',
-    data
-  })
-}
-export function setPhone(data) {
-  return request({
-    url: '/examination/setPhone',
+    url: '/order/add',
     method: 'post',
     data
   })
 }
 export function remove(data) {
   return request({
-    url: '/examination/removeExamination',
+    url: '/order/remove',
     method: 'post',
     data
   })
 }
 export function edit(data) {
   return request({
-    url: '/examination/edit',
+    url: '/document/edit',
     method: 'post',
     data
   })
 }
 export function getdetail(data) {
   return request({
-    url: '/examination/showReal',
+    url: '/order/detail',
     method: 'post',
     data
   })

@@ -2,171 +2,279 @@
   <div class="wrap">
     <el-card class="box-card">
       <el-row style="text-align: right;padding-bottom: 18px;">
-        <template v-if="device!=='mobile'">
-          <el-input v-model="searchName" placeholder="请输入试题名称" prefix-icon="el-icon-search"
-            style="display: inline-block;width: 250px;margin-right: 12px;">
-          </el-input>
+        <template v-if="device !== 'mobile'">
+          <el-input v-model="in_search" placeholder="请输入题目" prefix-icon="el-icon-search"
+            style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
-        <el-button @click='handleAddClick' type="primary">新增试题</el-button>
+        <el-button type="primary" @click="handleAddClick">新增</el-button>
         <el-button type="danger">删除</el-button>
       </el-row>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-        <el-table-column type="selection" width="65" align="center">
-        </el-table-column>
-        <el-table-column class-name="status-col" label="试题名称" align="center">
+        <el-table-column type="selection" width="65" align="center" />
+        <el-table-column label="题目" align="center">
           <template slot-scope="scope">
-            <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-              党的十八大对未来我国道德建设也做出了重要部署。强调要坚持依法治国和以德治国相结合，加强社会公德、职业道德、家庭美德、个人品德教育，弘扬中华传统美德，弘扬时代新风，指出了道德修养的（  ）性。
-            </div>
+            <span>{{ scope.row.title }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="created_at" label="试题种类" width="150">
+        <el-table-column align="center" prop="created_at" label="试题种类">
           <template slot-scope="scope">
-            单选题
+            <span>{{ scope.row.question_type | typeFilter }}</span>
           </template>
         </el-table-column>
-        <el-table-column class-name="status-col" label="试题类型" align="center" width="150">
+        <el-table-column align="center" prop="created_at" label="试题类型">
           <template slot-scope="scope">
-            <el-tag type="success">操作工</el-tag>
+            <span>操作工</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="200">
           <template slot-scope="scope">
-            <el-link type="primary" :underline="false" icon="el-icon-edit" style='margin: 0 10px;'>编辑</el-link>
-            <el-link type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
+            <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;"
+              @click="handleEditClick(scope.row)">编辑</el-link>
+            <el-link type="danger" :underline="false" icon="el-icon-delete"
+              @click="handleDeleteClick([scope.row.id])">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
       <div style="text-align: center;margin-top: 10px;">
-        <el-pagination background hide-on-single-page :page-size='pagination.pageSize'
-          :current-page='pagination.pageNum' layout="prev, pager, next" :total="pagination.total">
-        </el-pagination>
+        <el-pagination background hide-on-single-page :page-size="pagination.pageSize"
+          :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total"
+          @current-change="currentChange" />
       </div>
     </el-card>
-
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑公告':'新增公告'" :fullscreen="device=='mobile'">
-      <el-form :model="noticeModel" label-width="80px" label-position="right">
-        <el-form-item label="试题">
-          <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false" :auto-upload="false" :on-change="changeUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" :style="{width:device=='mobile'?'50vw':'30vw'}">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? '编辑' : '新增'"
+      :fullscreen="device == 'mobile'">
+      <el-form :model="addModel" label-width="80px" label-position="left">
+        <el-form-item label="题目类型">
+          <el-select v-model="addModel.type" placeholder="请选择" :disabled="true">
+            <el-option key="1" label="操作工" value="1" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="名称">
-          <el-input v-model="noticeModel.title"></el-input>
+        <el-form-item label="题目种类">
+          <el-select v-model="addModel.question_type" placeholder="请选择" @change="typeChange">
+            <el-option key="1" label="判断题" value="1" />
+            <el-option key="2" label="单选题" value="2" />
+            <el-option key="4" label="简答题" value="4" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="名称">
-            <el-input type="textarea" v-model="noticeModel.note" :autosize='{ minRows: 6, maxRows: 6 }'></el-input>
+        <el-form-item label="题目">
+          <el-input v-model="addModel.title" placeholder="请输入" />
+        </el-form-item>
+        <template v-if='addModel.question_type==2'>
+          <el-form-item label="选项A">
+            <el-input v-model="addModel.option_list[0].content" placeholder="请输入" />
+          </el-form-item>
+          <el-form-item label="选项B">
+            <el-input v-model="addModel.option_list[1].content" placeholder="请输入" />
+          </el-form-item>
+          <el-form-item label="选项C">
+            <el-input v-model="addModel.option_list[2].content" placeholder="请输入" />
+          </el-form-item>
+          <el-form-item label="选项D">
+            <el-input v-model="addModel.option_list[3].content" placeholder="请输入" />
+          </el-form-item>
+          <el-form-item label="答案">
+            <el-select v-model="addModel.answer" placeholder="请选择">
+              <el-option key="A" label="A" value="A" />
+              <el-option key="B" label="B" value="B" />
+              <el-option key="C" label="C" value="C" />
+              <el-option key="D" label="D" value="D" />
+            </el-select>
+          </el-form-item>
+        </template>
+        <template v-if='addModel.question_type==1'>
+          <el-form-item label="答案">
+            <el-radio v-model="addModel.answer" label="A">正确</el-radio>
+            <el-radio v-model="addModel.answer" label="B">错误</el-radio>
+          </el-form-item>
+        </template>
+        <template v-if='addModel.question_type==4'>
+          <el-form-item label="答案">
+            <el-input v-model="addModel.answer" type="textarea" :autosize="{ minRows: 6, maxRows: 6 }" />
+          </el-form-item>
+        </template>
+        <el-form-item label="说明">
+          <el-input v-model="addModel.explain" type="textarea" :autosize="{ minRows: 6, maxRows: 6 }" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
-        <el-button type="primary">确认</el-button>
+        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmRole">确认</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
   import {
-    getList
-  } from '@/api/table'
+    getList,
+    add,
+    getdetail,
+    edit,
+    remove
+  } from '@/api/question'
   import {
     mapGetters
   } from 'vuex'
 
-
-  const defaultNotice = {
+  const defaultModel = {
+    type: '1',
     title: '',
-    image:undefined,
-    note: ''
+    option_list: [{
+      "id": "A",
+      "content": "正确"
+    }, {
+      "id": "B",
+      "content": "错误"
+    }],
+    answer: '',
+    explain: '',
+    question_type: '1'
   }
+
   export default {
     computed: {
-      ...mapGetters([
-        'device'
-      ])
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        }
-        return statusMap[status]
-      }
+      ...mapGetters(['device'])
     },
     data() {
       return {
+        in_search: '',
         list: null,
+        roleList: null,
         listLoading: true,
-        searchName: '',
-        noticeModel: Object.assign({}, defaultNotice),
-        imageUrl:'http://dl.chi86.com/uploads/public/notice.jpg',
+        addModel: Object.assign({}, defaultModel),
         dialogVisible: false,
         dialogType: 'add',
         pagination: {
           total: 0,
           pageSize: 10,
-          pageNum: 0
+          pageNum: 1
         }
       }
     },
     created() {
       this.fetchData()
     },
+    filters: {
+      typeFilter(type) {
+        const statusMap = {
+          1: '判断题',
+          2: '单选题',
+          3: '判断题',
+          4: '简答题'
+        }
+        return statusMap[type]
+      }
+    },
     methods: {
+      currentChange(curren) {
+        this.pagination.pageNum = curren
+        this.fetchData()
+      },
+      typeChange() {
+        let typeList = [
+
+        ]
+        console.log()
+        if (this.addModel.question_type == 1) {
+          this.addModel.option_list = [{
+            "id": "A",
+            "content": "正确"
+          }, {
+            "id": "B",
+            "content": "错误"
+          }]
+        } else if (this.addModel.question_type == 2) {
+          this.addModel.option_list = [{
+            "id": "A",
+            "content": ""
+          }, {
+            "id": "B",
+            "content": ""
+          }, {
+            "id": "C",
+            "content": ""
+          }, {
+            "id": "D",
+            "content": ""
+          }]
+        }
+        this.$forceUpdate()
+      },
       fetchData() {
         this.listLoading = true
-        getList().then(response => {
-          this.list = response.data.items
+        getList({
+          in_search: this.in_search,
+          page: this.pagination.pageNum,
+          page_size: this.pagination.pageSize
+        }).then(response => {
+          this.list = response.data.data
+          this.pagination.total = response.data.total
+          this.pagination.pageNum = response.data.current_page
           this.listLoading = false
         })
       },
       handleAddClick() {
-        this.noticeModel = Object.assign({}, defaultNotice)
+        this.addModel = Object.assign({}, defaultModel)
         this.dialogType = 'new'
         this.dialogVisible = true
       },
-      changeUpload(file){
-        this.imageUrl = URL.createObjectURL(file.raw);
-        this.noticeModel.image=file.raw
+      handleEditClick(item) {
+        this.dialogType = 'edit'
+        this.dialogVisible = true
+        this.addModel=item
       },
+      handleDeleteClick(ids) {
+        remove({
+          id: ids.join(',')
+        }).then(response => {
+          if (response.code != 200) {
+            Message({
+              message: res.msg || 'Error',
+              type: 'error',
+              duration: 5 * 1000
+            })
+          } else {
+            this.fetchData()
+          }
+        })
+      },
+      confirmRole() {
+        const isEdit = this.dialogType === 'edit'
+        if (isEdit) {
+          edit(this.addModel).then(response => {
+            if (response.code != 200) {
+              Message({
+                message: res.msg || 'Error',
+                type: 'error',
+                duration: 5 * 1000
+              })
+            } else {
+              this.dialogVisible = false
+              this.fetchData()
+            }
+          })
+        } else {
+          add(this.addModel).then(response => {
+            if (response.code != 200) {
+              Message({
+                message: res.msg || 'Error',
+                type: 'error',
+                duration: 5 * 1000
+              })
+            } else {
+              this.dialogVisible = false
+              this.fetchData()
+            }
+          })
+        }
+      }
     }
   }
 </script>
 <style lang="scss" scoped>
   .wrap {
-    padding: 20px;
+    padding: 10px;
     background-color: rgb(240, 242, 245);
     position: relative;
   }
-  .avatar-uploader .el-upload {
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      width: 30vw;
-      height: 200px;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .avatar {
-      width:30vw;
-      height: 200px;
-      display: block;
-    }
 </style>
