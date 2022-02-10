@@ -69,7 +69,8 @@
     created() {
       let that=this
       getList({
-        status: -1
+        status: -1,
+        exam_time:''
       }).then(res => {
           if(res.data.count){
             console.log(res.data.count)
