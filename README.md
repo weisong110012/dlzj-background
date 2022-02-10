@@ -5,7 +5,7 @@ English | [简体中文](./README-zh.md)
 
 > 这是一个 吊篮百事通 管理后台。
 
-**Live demo:** [](https://dl.chi86.com/index.php/index/login/login)
+**Live demo:** [](http://dl.chi86.com:3100/#/dashboard)
 
 ## Build Setup
 

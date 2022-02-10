@@ -2,7 +2,7 @@
 
 > 这是一个 吊篮百事通 管理后台。
 
-[线上地址](https://dl.chi86.com/index.php/index/login/login)
+[线上地址](http://dl.chi86.com:3100/#/dashboard)
 
 
 ## Build Setup
