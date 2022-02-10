@@ -9,9 +9,9 @@
       </el-row>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
         <el-table-column type="selection" width="65" align="center" />
-        <el-table-column label="供需内容" align="center">
+        <el-table-column label="供需内容" align="center" width="250">
           <template slot-scope="scope">
-            <span>{{ scope.row.title }}</span>
+            <span>{{ scope.row.info }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="供需类型">
@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="创建人">
           <template slot-scope="scope">
-            <span>{{ scope.row.create_user }}</span>
+            <span>{{ scope.row.createuser.name }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="创建时间" width="200">

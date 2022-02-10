@@ -1,112 +1,123 @@
 <template>
   <div class="wrap">
     <el-tabs type="border-card" tab-position="left">
-      <el-tab-pane label="全部"><user-tab></user-tab></el-tab-pane>
-      <el-tab-pane label="排队中"><user-tab></user-tab></el-tab-pane>
-      <el-tab-pane label="已报名"><user-tab></user-tab></el-tab-pane>
-      <el-tab-pane label="待报道"><user-tab></user-tab></el-tab-pane>
-      <el-tab-pane label="培训中"><user-tab></user-tab></el-tab-pane>
-      <el-tab-pane label="已通过"><user-tab></user-tab></el-tab-pane>
-      <el-tab-pane label="未通过"><user-tab></user-tab></el-tab-pane>
+      <el-tab-pane v-for='item in tabList' :key='item.value'>
+        <div slot="label" style="text-align: center;">
+          {{item.label}} <span v-if='item.value>-1' style="color: rgb(64, 158, 255);">({{tabCount[item.value]}})</span>
+        </div>
+        <user-tab :status='item.value'></user-tab>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
-import { mapGetters } from 'vuex'
-import userTab from './components/userTab'
+  import {
+    getList
+  } from '@/api/exam'
+  import {
+    mapGetters
+  } from 'vuex'
+  import userTab from './components/userTab'
 
-const defaultNotice = {
-  title: '',
-  image: undefined,
-  note: ''
-}
-export default {
-  computed: {
-    ...mapGetters(['device'])
-  },
-  components: {
-    userTab
-  },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+  const defaultNotice = {
+    title: '',
+    image: undefined,
+    note: ''
+  }
+  export default {
+    computed: {
+      ...mapGetters(['device'])
+    },
+    components: {
+      userTab
+    },
+    data() {
+      return {
+        tabCount: [0, 0, 0, 0, 0, 0],
+        tabList: [{
+            label: '全部',
+            value: '-1'
+          },
+          {
+            label: '排队中',
+            value: '0'
+          },
+          {
+            label: '已报名',
+            value: '1'
+          },
+          {
+            label: '待报道',
+            value: '2'
+          },
+          {
+            label: '培训中',
+            value: '3'
+          },
+          {
+            label: '已通过',
+            value: '4'
+          },
+          {
+            label: '未通过',
+            value: '5'
+          },
+        ]
       }
-      return statusMap[status]
-    }
-  },
-  data() {
-    return {
-      list: null,
-      listLoading: true,
-      searchName: '',
-      noticeModel: Object.assign({}, defaultNotice),
-      imageUrl: 'http://dl.chi86.com/uploads/public/notice.jpg',
-      dialogVisible: false,
-      dialogType: 'add',
-      pagination: {
-        total: 0,
-        pageSize: 10,
-        pageNum: 0
-      }
-    }
-  },
-  created() {
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
+    },
+    created() {
+      let that=this
+      getList({
+        status: -1
+      }).then(res => {
+          if(res.data.count){
+            console.log(res.data.count)
+            res.data.count.forEach((item)=>{
+              that.tabCount[item.status]=item.count
+            })
+            this.$forceUpdate();
+          }
       })
     },
-    handleAddClick() {
-      this.noticeModel = Object.assign({}, defaultNotice)
-      this.dialogType = 'new'
-      this.dialogVisible = true
-    },
-    changeUpload(file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-      this.noticeModel.image = file.raw
+    methods: {
+
     }
   }
-}
 </script>
 <style lang="scss" scoped>
-.wrap {
-  padding: 10px;
-  background-color: rgb(240, 242, 245);
-  position: relative;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  width: 30vw;
-  height: 200px;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 30vw;
-  height: 200px;
-  display: block;
-}
+  .wrap {
+    padding: 10px;
+    background-color: #fff;
+    position: relative;
+  }
+
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    width: 30vw;
+    height: 200px;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 30vw;
+    height: 200px;
+    display: block;
+  }
 </style>
