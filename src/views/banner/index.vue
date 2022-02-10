@@ -48,7 +48,7 @@
             :data="noticeModel"
             :headers="headers"
             name="image"
-            :action="dialogType === 'edit' ?'/dev-api/carousel/edit':'/dev-api/carousel/add'"
+            :action="dialogType === 'edit' ? APiBefore+'/carousel/edit' : APiBefore+'/carousel/add'"
             :show-file-list="false"
             :auto-upload="false"
             :on-change="changeUpload"
@@ -97,6 +97,7 @@ export default {
       list: null,
       listLoading: true,
       in_search: '',
+      APiBefore:process.env.VUE_APP_BASE_API,
       noticeModel: Object.assign({}, defaultNotice),
       imageUrl: 'http://dl.chi86.com/uploads/public/carousel.jpg',
       dialogVisible: false,

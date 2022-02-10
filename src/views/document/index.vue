@@ -33,7 +33,7 @@
         </el-form-item>
         <el-form-item label="选择文件">
           <el-upload ref="upload" class="avatar-uploader" :data="addModel" :headers="headers" accept='application/pdf'
-            :action="'/dev-api/document/edit'" :show-file-list="false" :auto-upload="false" :on-change="changeUpload">
+            :action="APiBefore+'/document/edit'" :show-file-list="false" :auto-upload="false" :on-change="changeUpload">
             <span>
               {{addModel.file_name}}
             </span>
@@ -79,6 +79,7 @@
         headers: {
           'X-Token': getToken()
         },
+        APiBefore:process.env.VUE_APP_BASE_API,
         list: null,
         roleList: null,
         listLoading: true,
