@@ -6,9 +6,9 @@
           <el-input v-model="in_search" placeholder="请输入角色名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
         <el-button type="primary" @click="handleAddClick">新增角色</el-button>
-        <el-button type="danger">删除</el-button>
+        <el-button type="danger" @click="handleHeaderDeleteClick">删除</el-button>
       </el-row>
-      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="角色id" align="center">
           <template slot-scope="scope">
@@ -92,6 +92,7 @@ export default {
   },
   data() {
     return {
+      tableSelection: [],
       in_search: '',
       list: null,
       listLoading: true,
@@ -116,6 +117,16 @@ export default {
     this.routesData = this.generateRoutes(Routes)
   },
   methods: {
+    handleSelectionChange(val) {
+      this.tableSelection = val
+    },
+    handleHeaderDeleteClick() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.id)
+      })
+      this.handleDeleteClick(ids)
+    },
     generateRoutes(routes, basePath = '/') {
       const res = []
       for (let route of routes) {

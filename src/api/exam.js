@@ -42,3 +42,11 @@ export function getdetail(data) {
     data
   })
 }
+
+export function exportExcel(data) {
+  return request({
+    url: '/examination/exportExcel',
+    method: 'post',
+    data
+  })
+}

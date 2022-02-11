@@ -6,9 +6,9 @@
           <el-input v-model="in_search" placeholder="请输入管理员名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
         <el-button type="primary" @click="handleAddClick">新增管理员</el-button>
-        <el-button type="danger">删除</el-button>
+        <el-button type="danger" @click="handleHeaderDeleteClick">删除</el-button>
       </el-row>
-      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="账号" align="center">
           <template slot-scope="scope">
@@ -28,7 +28,7 @@
         <el-table-column align="center" label="操作" width="200">
           <template slot-scope="scope">
             <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;" @click="handleEditClick(scope.row)">编辑</el-link>
-            <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.account])">删除</el-link>
+            <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.id])">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      tableSelection: [],
       in_search: '',
       list: null,
       roleList: null,
@@ -88,6 +89,16 @@ export default {
     })
   },
   methods: {
+    handleSelectionChange(val) {
+      this.tableSelection = val
+    },
+    handleHeaderDeleteClick() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.id)
+      })
+      this.handleDeleteClick(ids)
+    },
     fetchData() {
       this.listLoading = true
       getList({ in_search: this.in_search, page: this.pagination.pageNum, page_size: this.pagination.pageSize }).then(response => {
@@ -110,7 +121,7 @@ export default {
       })
     },
     handleDeleteClick(account) {
-      remove({ account: account.join(',') }).then(response => {
+      remove({ id: account.join(',') }).then(response => {
         if (response.code != 200) {
           Message({
             message: res.msg || 'Error',

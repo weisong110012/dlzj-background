@@ -5,9 +5,9 @@
         <template v-if="device !== 'mobile'">
           <el-input v-model="in_search" placeholder="请输入订单名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
-        <el-button type="danger">删除</el-button>
+        <el-button type="danger" @click="handleHeaderDeleteClick">删除</el-button>
       </el-row>
-      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="供需内容" align="center" width="250">
           <template slot-scope="scope">
@@ -61,7 +61,7 @@
         </el-table-column>
       </el-table>
       <div style="text-align: center;margin-top: 10px;">
-        <el-pagination background hide-on-single-page :page-size="pagination.pageSize" :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total" />
+        <el-pagination background hide-on-single-page :page-size="pagination.pageSize" :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total" @current-change="currentChange" />
       </div>
     </el-card>
   </div>
@@ -82,6 +82,7 @@ export default {
   },
   data() {
     return {
+      tableSelection: [],
       in_search: '',
       list: null,
       roleList: null,
@@ -100,6 +101,20 @@ export default {
     this.fetchData()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.tableSelection = val
+    },
+    handleHeaderDeleteClick() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.demand_id)
+      })
+      this.handleDeleteClick(ids)
+    },
+    currentChange(curren) {
+      this.pagination.pageNum = curren
+      this.fetchData()
+    },
     fetchData() {
       this.listLoading = true
       getList({ in_search: this.in_search, page: this.pagination.pageNum, page_size: this.pagination.pageSize }).then(response => {

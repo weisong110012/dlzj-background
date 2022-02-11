@@ -12,10 +12,10 @@
           />
           <el-button size="medium" type="success">开班</el-button>
           <el-button size="medium" type="primary">设置</el-button>
-          <el-button size="medium" type="warning">导出</el-button>
-          <el-button size="medium" type="danger">删除</el-button>
+          <el-button size="medium" type="warning" @click="handelExport">导出</el-button>
+          <el-button size="medium" type="danger" @click="handleHeaderDeleteClick">删除</el-button>
         </el-row>
-        <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+        <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="65" align="center" />
           <el-table-column label="学员姓名" align="center">
             <template slot-scope="scope">
@@ -40,8 +40,14 @@
           </el-table-column>
           <el-table-column class-name="status-col" label="状态" align="center" width="150">
             <template slot-scope="scope">
-              <el-tag v-if="!scope.row.isEdit" :type="scope.row.status | statusTypeFilter">{{ scope.row.status | statusFilter }}</el-tag>
-              <el-select v-if="scope.row.isEdit" v-model="scope.row.status" placeholder="请选择" @change="editType(scope.row)">
+              <el-tag v-if="!scope.row.isEdit" :type="scope.row.status | statusTypeFilter">
+                {{ scope.row.status | statusFilter }}</el-tag>
+              <el-select
+                v-if="scope.row.isEdit"
+                v-model="scope.row.status"
+                placeholder="请选择"
+                @change="editType(scope.row)"
+              >
                 <el-option key="0" label="排队中" value="0" />
                 <el-option key="1" label="已报名" value="1" />
                 <el-option key="2" label="待报道" value="2" />
@@ -53,8 +59,15 @@
           </el-table-column>
           <el-table-column align="center" label="操作" width="200">
             <template slot-scope="scope">
-              <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;" :disabled="scope.row.isEdit" @click="scope.row.isEdit=true">编辑状态</el-link>
-              <el-link type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
+              <el-link
+                type="primary"
+                :underline="false"
+                icon="el-icon-edit"
+                style="margin: 0 10px;"
+                :disabled="scope.row.isEdit"
+                @click="scope.row.isEdit=true"
+              >编辑状态</el-link>
+              <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.exam_id])">删除</el-link>
             </template>
           </el-table-column>
         </el-table>
@@ -130,7 +143,10 @@
 <script>
 import {
   getList,
-  getCreateList, edit
+  getCreateList,
+  edit,
+  exportExcel,
+  remove
 } from '@/api/exam'
 import {
   mapGetters
@@ -172,6 +188,7 @@ export default {
   props: ['status'],
   data() {
     return {
+      tableSelection: [],
       list: null,
       type: '0',
       listLoading: true,
@@ -190,9 +207,49 @@ export default {
     this.fetchData()
   },
   methods: {
+    handelExport() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.exam_id)
+      })
+      exportExcel({ exam_id: ids.join(',') }).then(response => {
+        if (response.code != 200) {
+          Message({
+            message: res.msg || 'Error',
+            type: 'error',
+            duration: 5 * 1000
+          })
+        } else {
+          window.open(res.data)
+        }
+      })
+    },
+    handleSelectionChange(val) {
+      this.tableSelection = val
+    },
+    handleHeaderDeleteClick() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.exam_id)
+      })
+      this.handleDeleteClick(ids)
+    },
     toggleType(t) {
       this.type = t.index
       this.fetchData()
+    },
+    handleDeleteClick(ids) {
+      remove({ exam_id: ids.join(',') }).then(response => {
+        if (response.code != 200) {
+          Message({
+            message: res.msg || 'Error',
+            type: 'error',
+            duration: 5 * 1000
+          })
+        } else {
+          this.fetchData()
+        }
+      })
     },
     fetchData() {
       this.listLoading = true
@@ -220,7 +277,10 @@ export default {
       }
     },
     editType(item) {
-      edit({ exam_id: item.exam_id, status: item.status }).then(res => {
+      edit({
+        exam_id: item.exam_id,
+        status: item.status
+      }).then(res => {
         this.list.forEach(i => {
           if (i.exam_id == item.exam_id) {
             i.isEdit = false
