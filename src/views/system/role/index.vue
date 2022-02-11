@@ -6,7 +6,7 @@
           <el-input v-model="in_search" placeholder="请输入角色名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
         <el-button type="primary" @click="handleAddClick">新增角色</el-button>
-        <el-button type="danger" @click="handleHeaderDeleteClick">删除</el-button>
+        <el-button type="danger" :disabled="tableSelection.length==0" @click="handleHeaderDeleteClick">删除</el-button>
       </el-row>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />

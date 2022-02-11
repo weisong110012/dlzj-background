@@ -50,3 +50,61 @@ export function exportExcel(data) {
     data
   })
 }
+export function exportExcelCard(data) {
+  return request({
+    url: '/examination/download',
+    method: 'post',
+    data
+  })
+}
+export function sendExamTime(data) {
+  return request({
+    url: '/examination/sendExamTime',
+    method: 'post',
+    data
+  })
+}
+export function sendDeferExamTime(data) {
+  return request({
+    url: '/examination/sendDeferExamTime',
+    method: 'post',
+    data
+  })
+}
+export function sendReExamTime(data) {
+  return request({
+    url: '/examination/sendReExamTime',
+    method: 'post',
+    data
+  })
+}
+
+export function setSign(data) {
+  return request({
+    url: '/examination/setSign',
+    method: 'post',
+    data
+  })
+}
+export function setReport(data) {
+  return request({
+    url: '/examination/setReport',
+    method: 'post',
+    data
+  })
+}
+
+export function sendAdopt(data) {
+  return request({
+    url: '/examination/sendAdopt',
+    method: 'post',
+    data
+  })
+}
+export function sendUnadopt(data) {
+  return request({
+    url: '/examination/sendUnadopt',
+    method: 'post',
+    data
+  })
+}

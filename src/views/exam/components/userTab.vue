@@ -3,19 +3,103 @@
     <el-tabs type="border-card" tab-position="top" :value="type" @tab-click="toggleType">
       <el-tab-pane label="按学员">
         <el-row style="text-align: right;padding-bottom: 18px;">
-          <el-date-picker
-            v-model="exam_time"
-            type="date"
-            placeholder="筛选考试日期"
-            style="margin-right: 10px;"
-            @change="fetchData"
-          />
-          <el-button size="medium" type="success">开班</el-button>
-          <el-button size="medium" type="primary">设置</el-button>
-          <el-button size="medium" type="warning" @click="handelExport">导出</el-button>
-          <el-button size="medium" type="danger" @click="handleHeaderDeleteClick">删除</el-button>
+          <template v-if="device !== 'mobile'">
+            <el-date-picker
+              v-model="exam_time"
+              type="date"
+              placeholder="筛选考试日期"
+              style="margin-right: 10px;"
+              @change="fetchData"
+            />
+          </template>
+          <el-button size="medium" type="primary" style="margin: 5px;" @click="handelSetting">设置</el-button>
+          <el-button
+            v-if="status==0"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handelAllClick"
+          >报名</el-button>
+          <el-button
+            v-if="status==1"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >开班</el-button>
+          <el-button
+            v-if="status==2"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >延期</el-button>
+          <el-button
+            v-if="status==2"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handelAllClick"
+          >报道</el-button>
+          <el-button
+            v-if="status==3"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >通过</el-button>
+          <el-button
+            v-if="status==3"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >未通过</el-button>
+          <el-button
+            v-if="status==5"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >重新报名</el-button>
+          <el-button
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="warning"
+            style="margin: 5px;"
+            @click="handelExport"
+          >导出excel</el-button>
+          <el-button
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="warning"
+            style="margin: 5px;"
+            @click="handelExportCard"
+          >导出身份证</el-button>
+          <el-button
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="danger"
+            style="margin: 5px;"
+            @click="handleHeaderDeleteClick"
+          >删除</el-button>
         </el-row>
-        <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="65" align="center" />
           <el-table-column label="学员姓名" align="center">
             <template slot-scope="scope">
@@ -41,7 +125,8 @@
           <el-table-column class-name="status-col" label="状态" align="center" width="150">
             <template slot-scope="scope">
               <el-tag v-if="!scope.row.isEdit" :type="scope.row.status | statusTypeFilter">
-                {{ scope.row.status | statusFilter }}</el-tag>
+                {{ scope.row.status | statusFilter }}
+              </el-tag>
               <el-select
                 v-if="scope.row.isEdit"
                 v-model="scope.row.status"
@@ -67,7 +152,12 @@
                 :disabled="scope.row.isEdit"
                 @click="scope.row.isEdit=true"
               >编辑状态</el-link>
-              <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.exam_id])">删除</el-link>
+              <el-link
+                type="danger"
+                :underline="false"
+                icon="el-icon-delete"
+                @click="handleDeleteClick([scope.row.exam_id])"
+              >删除</el-link>
             </template>
           </el-table-column>
         </el-table>
@@ -84,19 +174,103 @@
       </el-tab-pane>
       <el-tab-pane label="按创建人">
         <el-row style="text-align: right;padding-bottom: 18px;">
-          <el-date-picker
-            v-model="exam_time"
-            type="date"
-            placeholder="筛选考试日期"
-            style="margin-right: 10px;"
-            @change="fetchData"
-          />
-          <el-button size="medium" type="success">开班</el-button>
-          <el-button size="medium" type="primary">设置</el-button>
-          <el-button size="medium" type="warning">导出</el-button>
-          <el-button size="medium" type="danger">删除</el-button>
+          <template v-if="device !== 'mobile'">
+            <el-date-picker
+              v-model="exam_time"
+              type="date"
+              placeholder="筛选考试日期"
+              style="margin-right: 10px;"
+              @change="fetchData"
+            />
+          </template>
+          <el-button size="medium" type="primary" style="margin: 5px;" @click="handelSetting">设置</el-button>
+          <el-button
+            v-if="status==0"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handelAllClick"
+          >报名</el-button>
+          <el-button
+            v-if="status==1"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >开班</el-button>
+          <el-button
+            v-if="status==2"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >延期</el-button>
+          <el-button
+            v-if="status==2"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handelAllClick"
+          >报道</el-button>
+          <el-button
+            v-if="status==3"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >通过</el-button>
+          <el-button
+            v-if="status==3"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >未通过</el-button>
+          <el-button
+            v-if="status==5"
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="success"
+            style="margin: 5px;"
+            @click="handleAddExamClick"
+          >重新报名</el-button>
+          <el-button
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="warning"
+            style="margin: 5px;"
+            @click="handelExport"
+          >导出excel</el-button>
+          <el-button
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="warning"
+            style="margin: 5px;"
+            @click="handelExportCard"
+          >导出身份证</el-button>
+          <el-button
+            v-show="tableSelection.length!=0"
+            size="medium"
+            type="danger"
+            style="margin: 5px;"
+            @click="handleHeaderDeleteClick"
+          >删除</el-button>
         </el-row>
-        <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="65" align="center" />
           <el-table-column label="创建人昵称" align="center">
             <template slot-scope="scope">
@@ -136,7 +310,45 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-
+    <el-dialog :visible.sync="dialogVisible" title="一键开班" :fullscreen="device == 'mobile'">
+      <el-form :model="examModel" label-width="80px" label-position="left">
+        <el-form-item label="考试时间">
+          <el-date-picker
+            v-model="examModel.exam_time"
+            type="date"
+            placeholder="请输入学员考试时间"
+            style="margin-right: 10px;"
+          />
+        </el-form-item>
+        <el-form-item label="发送内容">
+          <el-input v-model="examModel.send_value" type="textarea" :autosize="{ minRows: 6, maxRows: 6 }" />
+        </el-form-item>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmExam">确认</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="dialogVisibleSetting" title="设置" :fullscreen="device == 'mobile'">
+      <el-form :model="settingModel" label-width="100px" label-position="right">
+        <el-form-item label="提醒手机号">
+          <el-input v-model="settingModel.exam_send_phone" placeholder="请输入手机号" />
+        </el-form-item>
+        <el-form-item label="提醒阈值">
+          <el-input-number v-model="settingModel.send_count" :min="1" label="" />
+        </el-form-item>
+        <el-form-item label="排队阈值">
+          <el-input-number v-model="settingModel.exam_send_count" :min="1" label="排队阈值" />
+        </el-form-item>
+        <el-form-item label="考试次数限制">
+          <el-input-number v-model="settingModel.exam_count" :min="1" label="考试次数限制" />
+        </el-form-item>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmSetting">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -146,16 +358,28 @@ import {
   getCreateList,
   edit,
   exportExcel,
-  remove
+  remove,
+  exportExcelCard,
+  sendExamTime,
+  setPhone,
+  setSign,
+  setReport,
+  sendAdopt,
+  sendUnadopt
 } from '@/api/exam'
 import {
   mapGetters
 } from 'vuex'
 
-const defaultNotice = {
-  title: '',
-  image: undefined,
-  note: ''
+const defaultExam = {
+  exam_time: '',
+  send_value: '雄宇集团提醒您，请携带好身份证原件，于2021年12月15日到雄宇重工集团2楼雄宇学堂上课培训----。'
+}
+const defaultSetting = {
+  exam_send_phone: '+8613961845850',
+  exam_send_count: 50,
+  send_count: 50,
+  exam_count: 2
 }
 export default {
   computed: {
@@ -193,8 +417,10 @@ export default {
       type: '0',
       listLoading: true,
       exam_time: '',
-      noticeModel: Object.assign({}, defaultNotice),
+      examModel: Object.assign({}, defaultExam),
+      settingModel: Object.assign({}, defaultSetting),
       dialogVisible: false,
+      dialogVisibleSetting: false,
       dialogType: 'add',
       pagination: {
         total: 0,
@@ -212,15 +438,57 @@ export default {
       this.tableSelection.forEach(item => {
         ids.push(item.exam_id)
       })
-      exportExcel({ exam_id: ids.join(',') }).then(response => {
-        if (response.code != 200) {
-          Message({
-            message: res.msg || 'Error',
-            type: 'error',
-            duration: 5 * 1000
-          })
-        } else {
-          window.open(res.data)
+      exportExcel({
+        exam_id: ids.join(',')
+      }).then(response => {
+        if (response.code === 200) {
+          window.open(response.data.url)
+        }
+      })
+    },
+    handelAllClick() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.exam_id)
+      })
+      if (this.status == 0) {
+        setSign({
+          exam_id: ids.join(',')
+        }).then(response => {
+          if (response.code === 200) {
+            this.fetchData()
+            this.$message({
+              message: '报名成功！',
+              type: 'success',
+              duration: 5 * 1000
+            })
+          }
+        })
+      } else {
+        setReport({
+          exam_id: ids.join(',')
+        }).then(response => {
+          if (response.code === 200) {
+            this.fetchData()
+            this.$message({
+              message: '报道成功！',
+              type: 'success',
+              duration: 5 * 1000
+            })
+          }
+        })
+      }
+    },
+    handelExportCard() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.exam_id)
+      })
+      exportExcelCard({
+        exam_id: ids.join(',')
+      }).then(response => {
+        if (response.code === 200) {
+          window.open(response.data.url)
         }
       })
     },
@@ -239,14 +507,10 @@ export default {
       this.fetchData()
     },
     handleDeleteClick(ids) {
-      remove({ exam_id: ids.join(',') }).then(response => {
-        if (response.code != 200) {
-          Message({
-            message: res.msg || 'Error',
-            type: 'error',
-            duration: 5 * 1000
-          })
-        } else {
+      remove({
+        exam_id: ids.join(',')
+      }).then(response => {
+        if (response.code === 200) {
           this.fetchData()
         }
       })
@@ -288,6 +552,36 @@ export default {
         })
       })
       this.fetchData()
+    },
+    handelSetting() {
+      this.settingModel = Object.assign({}, defaultSetting)
+      this.dialogVisibleSetting = true
+    },
+    handleAddExamClick() {
+      this.examModel = Object.assign({}, defaultExam)
+      this.dialogVisible = true
+    },
+    confirmSetting() {
+      setPhone(this.settingModel).then(response => {
+        if (response.code === 200) {
+          this.dialogVisibleSetting = false
+        }
+      })
+    },
+    confirmExam() {
+      const ids = []
+      this.tableSelection.forEach(item => {
+        ids.push(item.exam_id)
+      })
+      sendExamTime({
+        exam_id: ids.join(','),
+        send_value: this.examModel.send_value,
+        exam_time: this.examModel.exam_time
+      }).then(response => {
+        if (response.code === 200) {
+          this.dialogVisible = false
+        }
+      })
     }
   }
 }

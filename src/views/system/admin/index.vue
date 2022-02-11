@@ -6,7 +6,7 @@
           <el-input v-model="in_search" placeholder="请输入管理员名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
         <el-button type="primary" @click="handleAddClick">新增管理员</el-button>
-        <el-button type="danger" @click="handleHeaderDeleteClick">删除</el-button>
+        <el-button type="danger" :disabled="tableSelection.length==0" @click="handleHeaderDeleteClick">删除</el-button>
       </el-row>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
@@ -26,7 +26,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="200">
-          <template slot-scope="scope">
+          <template v-if="scope.row.id!=1" slot-scope="scope">
             <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;" @click="handleEditClick(scope.row)">编辑</el-link>
             <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.id])">删除</el-link>
           </template>
