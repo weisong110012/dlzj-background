@@ -38,7 +38,16 @@
         <el-table-column align="center" label="操作" width="200">
           <template v-if="scope.row.id!=1" slot-scope="scope">
             <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;" @click="handleEditClick(scope.row)">编辑</el-link>
-            <el-link v-if="scope.row.id!=2" type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.id])">删除</el-link>
+            <el-popconfirm
+              v-if="scope.row.id!=2"
+              title="确定要删除吗？"
+              confirm-button-text="删除"
+              icon="el-icon-info"
+              icon-color="red"
+              @onConfirm="handleDeleteClick([scope.row.id])"
+            >
+              <el-link slot="reference" type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -224,13 +233,7 @@ export default {
     },
     handleDeleteClick(ids) {
       remove({ id: ids.join(',') }).then(response => {
-        if (response.code != 200) {
-          Message({
-            message: res.msg || 'Error',
-            type: 'error',
-            duration: 5 * 1000
-          })
-        } else {
+        if (response.code === 200) {
           this.fetchData()
         }
       })
@@ -248,13 +251,7 @@ export default {
           permission: JSON.stringify(role.routes)
         }
         edit(data).then(response => {
-          if (response.code != 200) {
-            Message({
-              message: res.msg || 'Error',
-              type: 'error',
-              duration: 5 * 1000
-            })
-          } else {
+          if (response.code === 200) {
             this.dialogVisible = false
             this.fetchData()
           }
@@ -267,13 +264,7 @@ export default {
           permission: JSON.stringify(role.routes)
         }
         add(data).then(response => {
-          if (response.code != 200) {
-            Message({
-              message: res.msg || 'Error',
-              type: 'error',
-              duration: 5 * 1000
-            })
-          } else {
+          if (response.code === 200) {
             this.dialogVisible = false
             this.fetchData()
           }

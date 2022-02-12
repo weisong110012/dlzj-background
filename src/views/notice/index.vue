@@ -3,8 +3,13 @@
     <el-card class="box-card">
       <el-row style="text-align: right;padding-bottom: 18px;">
         <template v-if="device !== 'mobile'">
-          <el-input v-model="in_search" placeholder="请输入公告名称" prefix-icon="el-icon-search"
-            style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
+          <el-input
+            v-model="in_search"
+            placeholder="请输入公告名称"
+            prefix-icon="el-icon-search"
+            style="display: inline-block;width: 250px;margin-right: 12px;"
+            @input="fetchData"
+          />
         </template>
         <el-button type="primary" @click="handleAddClick">新增公告</el-button>
       </el-row>
@@ -25,28 +30,58 @@
             </div>
             <div class="footer">
               <div class="btn" @click="handleEditClick(item)">编辑</div>
-              <div class="btn delete" @click="handleDeleteClick(item)">删除</div>
+              <el-popconfirm
+                title="确定要删除吗？"
+                confirm-button-text="删除"
+                icon="el-icon-info"
+                icon-color="red"
+                @onConfirm="handleDeleteClick(item)"
+              >
+                <el-button slot="reference" class="btn delete">删除</el-button>
+              </el-popconfirm>
             </div>
           </div>
         </el-col>
       </el-row>
 
       <div style="text-align: center;margin-top: 10px;">
-        <el-pagination background hide-on-single-page :page-size="pagination.pageSize"
-          :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total"
-          @current-change="currentChange" />
+        <el-pagination
+          background
+          hide-on-single-page
+          :page-size="pagination.pageSize"
+          :current-page="pagination.pageNum"
+          layout="prev, pager, next"
+          :total="pagination.total"
+          @current-change="currentChange"
+        />
       </div>
     </el-card>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? '编辑公告' : '新增公告'"
-      :fullscreen="device == 'mobile'">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      :title="dialogType === 'edit' ? '编辑公告' : '新增公告'"
+      :fullscreen="device == 'mobile'"
+    >
       <el-form :model="noticeModel" label-width="80px" label-position="right">
         <el-form-item label="公告封面">
-          <el-upload ref="upload" class="avatar-uploader" :data="noticeModel" :headers="headers" name="image"
-            :action="dialogType === 'edit' ?APiBefore+'/notice/edit':APiBefore+'/notice/add'" :show-file-list="false"
-            :auto-upload="false" :on-change="changeUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar"
-              :style="{ width: device == 'mobile' ? '50vw' : '30vw' }">
+          <el-upload
+            ref="upload"
+            class="avatar-uploader"
+            :data="noticeModel"
+            :headers="headers"
+            name="image"
+            :action="dialogType === 'edit' ?APiBefore+'/notice/edit':APiBefore+'/notice/add'"
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="changeUpload"
+            :on-success="fetchData"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              class="avatar"
+              :style="{ width: device == 'mobile' ? '50vw' : '30vw' }"
+            >
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
@@ -66,154 +101,135 @@
 </template>
 
 <script>
-  import {
-    getList,
-    add,
-    getdetail,
-    edit,
-    remove
-  } from '@/api/notice'
-  import {
-    mapGetters
-  } from 'vuex'
-  import {
-    getToken
-  } from '@/utils/auth'
-  const defaultNotice = {
-    title: '',
-    image: undefined,
-    note: ''
-  }
-  export default {
-    computed: {
-      ...mapGetters(['device'])
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        }
-        return statusMap[status]
+import {
+  getList,
+  add,
+  edit,
+  remove
+} from '@/api/notice'
+import {
+  mapGetters
+} from 'vuex'
+import {
+  getToken
+} from '@/utils/auth'
+const defaultNotice = {
+  title: '',
+  image: undefined,
+  note: ''
+}
+export default {
+  computed: {
+    ...mapGetters(['device'])
+  },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
       }
-    },
-    data() {
-      return {
-        headers: {
-          'X-Token': getToken()
-        },
-        list: null,
-        listLoading: true,
-        in_search: '',
-        noticeModel: Object.assign({}, defaultNotice),
-        APiBefore:process.env.VUE_APP_BASE_API,
-        imageUrl: 'http://dl.chi86.com/uploads/public/notice.jpg',
-        dialogVisible: false,
-        dialogType: 'add',
-        pagination: {
-          total: 0,
-          pageSize: 8,
-          pageNum: 1
-        }
+      return statusMap[status]
+    }
+  },
+  data() {
+    return {
+      headers: {
+        'X-Token': getToken()
+      },
+      list: null,
+      listLoading: true,
+      in_search: '',
+      noticeModel: Object.assign({}, defaultNotice),
+      APiBefore: process.env.VUE_APP_BASE_API,
+      imageUrl: 'http://dl.chi86.com/uploads/public/notice.jpg',
+      dialogVisible: false,
+      dialogType: 'add',
+      pagination: {
+        total: 0,
+        pageSize: 8,
+        pageNum: 1
       }
-    },
-    created() {
+    }
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    currentChange(curren) {
+      this.pagination.pageNum = curren
       this.fetchData()
     },
-    methods: {
-      currentChange(curren) {
-        this.pagination.pageNum = curren
-        this.fetchData()
-      },
-      fetchData() {
-        this.listLoading = true
-        getList({
-          in_search: this.in_search,
-          page: this.pagination.pageNum,
-          page_size: this.pagination.pageSize
-        }).then(response => {
-          this.list = response.data.data
-          this.pagination.total = response.data.total
-          this.pagination.pageNum = response.data.current_page
-          this.listLoading = false
-        })
-      },
-      handleAddClick() {
-        this.noticeModel = Object.assign({}, defaultNotice)
-        this.dialogType = 'new'
-        this.dialogVisible = true
-      },
-      handleEditClick(item) {
-        this.noticeModel = item
-        this.noticeModel.image = null
-        this.imageUrl = item.image_path
-        this.dialogType = 'edit'
-        this.dialogVisible = true
-      },
-      handleDeleteClick(item) {
-        remove({
-          notice_id: item.notice_id.toString()
-        }).then(response => {
-          if (response.code != 200) {
-            Message({
-              message: res.msg || 'Error',
-              type: 'error',
-              duration: 5 * 1000
-            })
-          } else {
-            this.fetchData()
-          }
-        })
-      },
-      changeUpload(file) {
-        this.imageUrl = URL.createObjectURL(file.raw)
-        this.noticeModel.image = file
-      },
-      confirmRole() {
-        const isEdit = this.dialogType === 'edit'
-        if (isEdit) {
-          if (this.noticeModel.image) {
-            this.$refs.upload.submit()
-            this.dialogVisible = false
-            this.fetchData()
-          } else {
-            edit(this.noticeModel).then(response => {
-              if (response.code != 200) {
-                Message({
-                  message: res.msg || 'Error',
-                  type: 'error',
-                  duration: 5 * 1000
-                })
-              } else {
-                this.dialogVisible = false
-                this.fetchData()
-              }
-            })
-          }
+    fetchData() {
+      this.listLoading = true
+      getList({
+        in_search: this.in_search,
+        page: this.pagination.pageNum,
+        page_size: this.pagination.pageSize
+      }).then(response => {
+        this.list = response.data.data
+        this.pagination.total = response.data.total
+        this.pagination.pageNum = response.data.current_page
+        this.listLoading = false
+      })
+    },
+    handleAddClick() {
+      this.noticeModel = Object.assign({}, defaultNotice)
+      this.imageUrl = 'http://dl.chi86.com/uploads/public/notice.jpg'
+      this.dialogType = 'new'
+      this.dialogVisible = true
+    },
+    handleEditClick(item) {
+      this.noticeModel = item
+      this.noticeModel.image = null
+      this.imageUrl = item.image_path
+      this.dialogType = 'edit'
+      this.dialogVisible = true
+    },
+    handleDeleteClick(item) {
+      remove({
+        notice_id: item.notice_id.toString()
+      }).then(response => {
+        if (response.code === 200) {
+          this.pagination.pageNum = 1
+          this.fetchData()
+        }
+      })
+    },
+    changeUpload(file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+      this.noticeModel.image = file
+    },
+    confirmRole() {
+      const isEdit = this.dialogType === 'edit'
+      if (isEdit) {
+        if (this.noticeModel.image) {
+          this.$refs.upload.submit()
+          this.dialogVisible = false
         } else {
-          if (this.noticeModel.image) {
-            this.$refs.upload.submit()
-            this.dialogVisible = false
-            this.fetchData()
-          } else {
-            add(this.noticeModel).then(response => {
-              if (response.code != 200) {
-                Message({
-                  message: res.msg || 'Error',
-                  type: 'error',
-                  duration: 5 * 1000
-                })
-              } else {
-                this.dialogVisible = false
-                this.fetchData()
-              }
-            })
-          }
+          edit(this.noticeModel).then(response => {
+            if (response.code === 200) {
+              this.dialogVisible = false
+              this.fetchData()
+            }
+          })
+        }
+      } else {
+        if (this.noticeModel.image) {
+          this.$refs.upload.submit()
+          this.dialogVisible = false
+        } else {
+          add(this.noticeModel).then(response => {
+            if (response.code === 200) {
+              this.dialogVisible = false
+              this.fetchData()
+            }
+          })
         }
       }
     }
   }
+}
 </script>
 <style lang="scss" scoped>
   .wrap {
@@ -317,7 +333,7 @@
 
         .delete {
           background: linear-gradient(135deg, #e61a80, #e61a3c);
-
+          line-height: 0px;
           &::before {
             box-shadow: 0 0 8px 8px rgb(230 26 60 / 25%);
           }

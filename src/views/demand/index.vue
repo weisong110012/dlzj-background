@@ -5,7 +5,7 @@
         <template v-if="device !== 'mobile'">
           <el-input v-model="in_search" placeholder="请输入订单名称" prefix-icon="el-icon-search" style="display: inline-block;width: 250px;margin-right: 12px;" @input="fetchData" />
         </template>
-        <el-button type="danger" @click="handleHeaderDeleteClick">删除</el-button>
+        <el-button :disabled="tableSelection.length==0" type="danger" @click="handleHeaderDeleteClick">删除</el-button>
       </el-row>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
@@ -54,9 +54,17 @@
             <span>{{ scope.row.create_time }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="200">
+        <el-table-column align="center" label="操作" width="100">
           <template slot-scope="scope">
-            <el-link type="danger" :underline="false" icon="el-icon-delete" @click="handleDeleteClick([scope.row.demand_id])">删除</el-link>
+            <el-popconfirm
+              title="确定要删除吗？"
+              confirm-button-text="删除"
+              icon="el-icon-info"
+              icon-color="red"
+              @onConfirm="handleDeleteClick([scope.row.demand_id])"
+            >
+              <el-link slot="reference" type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +76,7 @@
 </template>
 
 <script>
-import { getList, add, getdetail, edit, remove } from '@/api/demand'
+import { getList, remove } from '@/api/demand'
 import { mapGetters } from 'vuex'
 
 const defaultModel = {
@@ -126,13 +134,8 @@ export default {
     },
     handleDeleteClick(demand_id) {
       remove({ demand_id: demand_id.join(',') }).then(response => {
-        if (response.code != 200) {
-          Message({
-            message: res.msg || 'Error',
-            type: 'error',
-            duration: 5 * 1000
-          })
-        } else {
+        if (response.code === 200) {
+          this.pagination.pageNum = 1
           this.fetchData()
         }
       })

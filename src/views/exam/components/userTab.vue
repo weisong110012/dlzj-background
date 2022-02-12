@@ -430,7 +430,6 @@ export default {
     }
   },
   created() {
-    this.fetchData()
   },
   methods: {
     handelExport() {
@@ -456,7 +455,7 @@ export default {
           exam_id: ids.join(',')
         }).then(response => {
           if (response.code === 200) {
-            this.fetchData()
+            this.$emit('fetchData')
             this.$message({
               message: '报名成功！',
               type: 'success',
@@ -469,7 +468,7 @@ export default {
           exam_id: ids.join(',')
         }).then(response => {
           if (response.code === 200) {
-            this.fetchData()
+            this.$emit('fetchData')
             this.$message({
               message: '报道成功！',
               type: 'success',
@@ -511,7 +510,7 @@ export default {
         exam_id: ids.join(',')
       }).then(response => {
         if (response.code === 200) {
-          this.fetchData()
+          this.$emit('fetchData')
         }
       })
     },
@@ -545,13 +544,8 @@ export default {
         exam_id: item.exam_id,
         status: item.status
       }).then(res => {
-        this.list.forEach(i => {
-          if (i.exam_id == item.exam_id) {
-            i.isEdit = false
-          }
-        })
+        this.$emit('fetchData')
       })
-      this.fetchData()
     },
     handelSetting() {
       this.settingModel = Object.assign({}, defaultSetting)
