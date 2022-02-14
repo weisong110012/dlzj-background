@@ -77,6 +77,7 @@ export default {
         exam_time: ''
       }).then(res => {
         if (res.data.count) {
+          that.tabCount = [0, 0, 0, 0, 0, 0]
           res.data.count.forEach((item) => {
             that.tabCount[item.status] = item.count
           })
