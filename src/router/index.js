@@ -36,6 +36,11 @@ export const constantRoutes = [{
     hidden: true
   },
   {
+    path: '/grouplogin',
+    component: () => import('@/views/login/group'),
+    hidden: true
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -45,31 +50,31 @@ export const constantRoutes = [{
     component: Layout,
     redirect: '/profile/index',
     hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: '个人中心', icon: 'user', noCache: true }
+    children: [{
+      path: 'index',
+      component: () => import('@/views/profile/index'),
+      name: 'Profile',
+      meta: {
+        title: '个人中心',
+        icon: 'user',
+        noCache: true
       }
-    ]
+    }]
   },
   {
-      "path": "",
-      "component": Layout,
-      "redirect": "dashboard",
-      "children": [
-          {
-              "path": "/dashboard",
-               component: () => import('@/views/dashboard/index'),
-              "name": "Dashboard",
-              "meta": {
-                  "title": "首页",
-                  "icon": "dashboard",
-                  "affix": true
-              }
-          }
-      ]
+    "path": "",
+    "component": Layout,
+    "redirect": "dashboard",
+    "children": [{
+      "path": "/dashboard",
+      component: () => import('@/views/dashboard/index'),
+      "name": "Dashboard",
+      "meta": {
+        "title": "首页",
+        "icon": "dashboard",
+        "affix": true
+      }
+    }]
   }
 ]
 

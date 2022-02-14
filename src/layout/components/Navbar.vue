@@ -43,7 +43,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'type'
     ])
   },
   methods: {
@@ -52,7 +53,11 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      if(this.type===1){
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      }else{
+        this.$router.push(`/grouplogin`)
+      }
     }
   }
 }

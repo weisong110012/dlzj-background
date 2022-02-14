@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    type:1,
   }
 }
 
@@ -24,17 +25,36 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_TYPE: (state, type) => {
+    state.type = type
   }
 }
 
 const actions = {
-  // user login
+  // admin login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data)
+        commit('SET_TYPE', 1)
+        setToken(data)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  // group login
+  grouplogin({ commit }, userInfo) {
+    const { username, password } = userInfo
+    return new Promise((resolve, reject) => {
+      login({ username: username.trim(), password: password }).then(response => {
+        const { data } = response
+        commit('SET_TOKEN', data)
+        commit('SET_TYPE', 2)
         setToken(data)
         resolve()
       }).catch(error => {
@@ -52,7 +72,7 @@ const actions = {
           return reject('获取用户信息失败！请重新登录.')
         }
         let result={
-          name:data.role.role_name,
+          name:data.account,
           permission:JSON.parse(JSON.stringify(data.role.permission)),
           avatar:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
         }
@@ -72,7 +92,9 @@ const actions = {
       logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
+        let type=state.type;
         commit('RESET_STATE')
+        commit('SET_TYPE', type)
         resolve()
       }).catch(error => {
         reject(error)
