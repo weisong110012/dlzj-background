@@ -22,3 +22,19 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getList(data) {
+  return request({
+    url: '/user/index',
+    method: 'post',
+    data
+  })
+}
+
+export function remove(data) {
+  return request({
+    url: '/user/remove',
+    method: 'post',
+    data
+  })
+}
