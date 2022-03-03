@@ -11,7 +11,7 @@ const routes=[
           name: 'group',
           component: 'views/group/index',
           meta: { title: '部门管理', icon: 'el-icon-postcard' },
-          hidden:false
+          hidden:true
         }
       ]
     },
@@ -167,10 +167,23 @@ const routes=[
           component: 'views/system/role/index',
           meta: { title: '角色管理', icon: 'el-icon-s-custom' },
           hidden:false
+        },
+        {
+          path: 'groupadmin',
+          name: 'groupadmin',
+          component: 'views/system/groupadmin/index',
+          meta: { title: '管理员管理', icon: 'el-icon-s-custom' },
+          hidden:false
+        },
+        {
+          path: 'grouprole',
+          name: 'grouprole',
+          component: 'views/system/grouprole/index',
+          meta: { title: '角色管理', icon: 'el-icon-s-custom' },
+          hidden:false
         }
       ]
     },
 ]
 
 module.exports=routes;
-

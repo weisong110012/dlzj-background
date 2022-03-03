@@ -77,7 +77,7 @@ import { deepClone } from '@/utils'
 import { getList, add, getdetail, edit, remove } from '@/api/role'
 import { mapGetters } from 'vuex'
 
-import Routes from '@/router/routes.js'
+import Routes from '@/router/grouproutes.js'
 
 const defaultRole = {
   role_name: '',
@@ -86,19 +86,6 @@ const defaultRole = {
 }
 
 export default {
-  computed: {
-    ...mapGetters(['device'])
-  },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       tableSelection: [],
@@ -120,6 +107,9 @@ export default {
         pageNum: 0
       }
     }
+  },
+  computed: {
+    ...mapGetters(['device'])
   },
   created() {
     this.fetchData()
