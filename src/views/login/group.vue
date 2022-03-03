@@ -15,7 +15,7 @@
             label-position="left"
           >
             <div class="title-container">
-              <h3 class="title"> <img src="@/assets/images/login/logo.png">吊篮百事通管理系统</h3>
+              <h3 class="title"> <img src="@/assets/images/login/logo.png">吊篮百事通公司管理系统</h3>
             </div>
             <el-form-item prop="username">
               <span class="svg-container">
@@ -57,8 +57,14 @@
               type="primary"
               style="width:100%;margin-bottom:30px;"
               @click.native.prevent="handleLogin"
-            >登录</el-button>
-
+            >公司管理员登录</el-button>
+            <div class="tips">
+              <span>
+                <router-link :to="'login'">
+                  吊篮百事通管理 >>
+                </router-link>
+              </span>
+            </div>
             <!-- <div class="tips">
             <span style="margin-right:20px;">账号: admin</span>
             <span> 密码: any</span>
@@ -249,7 +255,7 @@ export default {
       font-size: 14px;
       color: #fff;
       margin-bottom: 10px;
-
+      text-align: right;
       span {
         &:first-of-type {
           margin-right: 16px;

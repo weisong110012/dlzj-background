@@ -58,7 +58,13 @@
               style="width:100%;margin-bottom:30px;"
               @click.native.prevent="handleLogin"
             >登录</el-button>
-
+            <div class="tips">
+              <span>
+                <router-link :to="'grouplogin'">
+                  公司管理 >>
+                </router-link>
+              </span>
+            </div>
             <!-- <div class="tips">
             <span style="margin-right:20px;">账号: admin</span>
             <span> 密码: any</span>
@@ -249,7 +255,7 @@ export default {
       font-size: 14px;
       color: #fff;
       margin-bottom: 10px;
-
+      text-align: right;
       span {
         &:first-of-type {
           margin-right: 16px;

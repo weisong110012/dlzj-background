@@ -36,7 +36,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password, type:1 }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data)
         commit('SET_TYPE', 1)
@@ -51,7 +51,7 @@ const actions = {
   grouplogin({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password, type:2 }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data)
         commit('SET_TYPE', 2)

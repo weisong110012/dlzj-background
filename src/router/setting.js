@@ -132,9 +132,9 @@ const routes=[
           hidden:false
         },
         {
-          path: 'group',
-          name: 'group',
-          component: 'views/system/group/index',
+          path: 'company',
+          name: 'company',
+          component: 'views/company/index',
           meta: { title: '公司管理', icon: 'el-icon-office-building' },
           hidden:false
         },
@@ -157,3 +157,4 @@ const routes=[
 ]
 
 module.exports=routes;
+
