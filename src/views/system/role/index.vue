@@ -244,6 +244,8 @@ export default {
       this.role.routes = this.generateTree(deepClone(Routes), '/', checkedKeys)
       if (isEdit) {
         const role = this.role
+        console.log(role.routes)
+        console.log(Routes)
         const data = {
           id: role.id,
           role_name: role.role_name,

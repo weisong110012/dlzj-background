@@ -1,21 +1,5 @@
 const routes=[
     {
-      path: '/groupMange',
-      "component": "layout/Layout",
-      redirect: '/groupMange/group',
-      name: 'groupMange',
-      meta: { title: '部门管理', icon: 'el-icon-postcard' },
-      children: [
-        {
-          path: 'group',
-          name: 'group',
-          component: 'views/group/index',
-          meta: { title: '部门管理', icon: 'el-icon-postcard' },
-          hidden:true
-        }
-      ]
-    },
-    {
       path: '/noticeMange',
       "component": "layout/Layout",
       redirect: '/noticeMange/notice',
@@ -129,6 +113,22 @@ const routes=[
           path: 'banner',
           name: 'banner',
           component: 'views/banner/index',
+          meta: { title: '轮播图管理', icon: 'el-icon-picture' },
+          hidden:false
+        }
+      ]
+    },
+    {
+      path: '/groupMange',
+      "component": "layout/Layout",
+      redirect: '/groupMange/group',
+      name: 'groupMange',
+      meta: { title: '轮播图管理', icon: 'el-icon-picture' },
+      children: [
+        {
+          path: 'group',
+          name: 'group',
+          component: 'views/groupMange/index',
           meta: { title: '轮播图管理', icon: 'el-icon-picture' },
           hidden:false
         }
