@@ -47,7 +47,6 @@ const actions = {
   }) {
     return new Promise(resolve => {
       let accessedRoutes
-      permission = JSON.parse(permission);
       accessedRoutes = filterAsyncRoutes(permission)
       let Route404=[{
         path: '*',

@@ -73,7 +73,7 @@ const actions = {
         }
         let result={
           name:data.account,
-          permission:JSON.parse(JSON.stringify(data.role.permission)),
+          permission:JSON.parse(data.role.permission),
           avatar:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
         }
         const { name, avatar } = result
