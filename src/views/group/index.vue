@@ -14,7 +14,7 @@
       ></el-tree>
       <div v-show="menuVisible">
         <div id="menu" class="menu">
-          <div class="menu_item edit" @click="">编辑</div>
+          <div class="menu_item edit" @click="handleEditClick">编辑</div>
           <div class="menu_item delete" @click="">删除</div>
         </div>
       </div>
@@ -28,8 +28,8 @@
         <el-form-item label="名称"><el-input v-model="addModel.name" placeholder="请输入" /></el-form-item>
         <el-form-item label="上级部门">
           <el-select v-model="addModel.pid" placeholder="请选择">
-            <el-option label="顶级部门" value="0" />
-            <el-option v-for="item in list" :key="item.id" :label="item.name" :value="item.id + ''" />
+            <el-option label="顶级部门" :value="0" />
+            <el-option v-for="item in list" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -86,6 +86,7 @@ export default {
     handlClick() {},
     //右键点击
     rightClick(MouseEvent, object, Node, element) {
+      this.selectIndex = Node.data
       // 鼠标右击触发事件
       this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
       this.menuVisible = true // 显示模态窗口，跳出自定义菜单栏
@@ -99,10 +100,6 @@ export default {
       // 取消鼠标监听事件 菜单栏
       this.menuVisible = false
       document.removeEventListener('click', this.foo) // 要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
-    },
-    handleSelect(index) {
-      this.selectIndex = index
-      console.log(index)
     },
     handleSelectionChange(val) {
       this.tableSelection = val
@@ -129,12 +126,10 @@ export default {
       this.dialogType = 'new'
       this.dialogVisible = true
     },
-    handleEditClick(item) {
+    handleEditClick() {
       this.dialogType = 'edit'
       this.dialogVisible = true
-      getdetail({ id: item.id }).then(res => {
-        this.addModel = res.data
-      })
+      this.addModel = this.selectIndex
     },
     handleDeleteClick(account) {
       remove({ id: account.join(',') }).then(response => {
@@ -206,27 +201,25 @@ export default {
       font-size: 13px;
       line-height: 36px;
       height: 36px;
-      &:hover{
+      &:hover {
         color: #fff;
       }
     }
-    .delete{
-      border-radius:0 0 10px 10px;
-      color: #F56C6C;
-      &:hover{
-        background: #F56C6C;
+    .delete {
+      border-radius: 0 0 10px 10px;
+      color: #f56c6c;
+      &:hover {
+        background: #f56c6c;
       }
     }
-    .edit{
+    .edit {
       border-radius: 10px 10px 0 0;
-      color: #409EFF;
-      &:hover{
-        background: #409EFF;
+      color: #409eff;
+      &:hover {
+        background: #409eff;
       }
     }
   }
-
-
 }
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar {
