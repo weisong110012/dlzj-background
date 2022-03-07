@@ -35,7 +35,7 @@
                 confirm-button-text="删除"
                 icon="el-icon-info"
                 icon-color="red"
-                @onConfirm="handleDeleteClick(item)"
+                @confirm="handleDeleteClick(item)"
               >
                 <el-button slot="reference" class="btn delete">删除</el-button>
               </el-popconfirm>

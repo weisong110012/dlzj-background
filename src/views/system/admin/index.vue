@@ -33,7 +33,7 @@
               confirm-button-text="删除"
               icon="el-icon-info"
               icon-color="red"
-              @onConfirm="handleDeleteClick([scope.row.id])"
+              @confirm="handleDeleteClick([scope.row.id])"
             >
               <el-link slot="reference" type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
             </el-popconfirm>

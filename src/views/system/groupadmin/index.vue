@@ -92,8 +92,8 @@ export default {
   },
   created() {
     this.fetchData()
-    getRoleList().then(res => {
-      this.roleList = res.data.data
+    getRoleList({is_all:1}).then(res => {
+      this.roleList = res.data
     })
   },
   methods: {
