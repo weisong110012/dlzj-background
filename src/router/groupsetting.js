@@ -2,7 +2,6 @@ const routes=[
     {
       path: '/groupMange',
       "component": "layout/Layout",
-      redirect: '/groupMange/group',
       name: 'groupMange',
       meta: { title: '部门管理', icon: 'el-icon-postcard' },
       children: [

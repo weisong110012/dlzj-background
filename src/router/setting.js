@@ -73,7 +73,6 @@ const routes=[
     {
       path: '/documentMange',
       "component": "layout/Layout",
-      redirect: '/documentMange/demand',
       name: 'documentMange',
       meta: { title: '文档管理', icon: 'el-icon-document' },
       children: [

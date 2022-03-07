@@ -33,7 +33,7 @@
               confirm-button-text="删除"
               icon="el-icon-info"
               icon-color="red"
-              @onConfirm="handleDeleteClick([scope.row.id])"
+              @confirm="handleDeleteClick([scope.row.id])"
             >
               <el-link slot="reference" type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
             </el-popconfirm>
@@ -48,7 +48,7 @@
       <el-form :model="addModel" label-width="80px" label-position="left">
         <el-form-item label="账号"><el-input v-model="addModel.account" placeholder="请输入" /></el-form-item>
         <el-form-item label="角色">
-          <el-select v-model="addModel.role_id" placeholder="请选择"><el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.id" /></el-select>
+          <el-select v-model="addModel.compy_role_id" placeholder="请选择"><el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.id+''" /></el-select>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -60,13 +60,13 @@
 </template>
 
 <script>
-import { getList, add, getdetail, edit, remove } from '@/api/admin'
-import { getList as getRoleList } from '@/api/role'
+import { getList, add, getdetail, edit, remove } from '@/api/companyadmin'
+import { getList as getRoleList } from '@/api/companyrole'
 import { mapGetters } from 'vuex'
 
 const defaultModel = {
   account: '',
-  role_id: ''
+  compy_role_id: ''
 }
 
 export default {
@@ -124,7 +124,7 @@ export default {
     handleEditClick(item) {
       this.dialogType = 'edit'
       this.dialogVisible = true
-      getdetail({ account: item.account }).then(res => {
+      getdetail({ id: item.id }).then(res => {
         this.addModel = res.data
       })
     },

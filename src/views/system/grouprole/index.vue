@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="备注">
           <template slot-scope="scope">
-            <span>{{ scope.row.remark }}</span>
+            <span>{{ scope.row.description }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="创建时间">
@@ -39,12 +39,11 @@
           <template v-if="scope.row.id!=1" slot-scope="scope">
             <el-link type="primary" :underline="false" icon="el-icon-edit" style="margin: 0 10px;" @click="handleEditClick(scope.row)">编辑</el-link>
             <el-popconfirm
-              v-if="scope.row.id!=2"
               title="确定要删除吗？"
               confirm-button-text="删除"
               icon="el-icon-info"
               icon-color="red"
-              @onConfirm="handleDeleteClick([scope.row.id])"
+              @confirm="handleDeleteClick([scope.row.id])"
             >
               <el-link slot="reference" type="danger" :underline="false" icon="el-icon-delete">删除</el-link>
             </el-popconfirm>
@@ -52,13 +51,13 @@
         </el-table-column>
       </el-table>
       <div style="text-align: center;margin-top: 10px;">
-        <el-pagination background hide-on-single-page :page-size="pagination.pageSize" :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total" />
+        <el-pagination background hide-on-single-page :page-size="pagination.pageSize" :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total" @current-change="currentChange"/>
       </div>
     </el-card>
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? '编辑角色' : '新增角色'" :fullscreen="device == 'mobile'">
       <el-form :model="role" label-width="80px" label-position="left">
         <el-form-item label="角色名称"><el-input v-model="role.role_name" placeholder="请输入角色名称" /></el-form-item>
-        <el-form-item label="备注"><el-input v-model="role.remark" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="请输入角色备注" /></el-form-item>
+        <el-form-item label="备注"><el-input v-model="role.description" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" placeholder="请输入角色备注" /></el-form-item>
         <el-form-item label="权限">
           <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
         </el-form-item>
@@ -74,14 +73,14 @@
 <script>
 import path from 'path'
 import { deepClone } from '@/utils'
-import { getList, add, getdetail, edit, remove } from '@/api/role'
+import { getList, add, getdetail, edit, remove } from '@/api/companyrole'
 import { mapGetters } from 'vuex'
 
 import Routes from '@/router/grouproutes.js'
 
 const defaultRole = {
   role_name: '',
-  remark: '',
+  description: '',
   routes: []
 }
 
@@ -116,6 +115,10 @@ export default {
     this.routesData = this.generateRoutes(Routes)
   },
   methods: {
+    currentChange(curren) {
+      this.pagination.pageNum = curren
+      this.fetchData()
+    },
     handleSelectionChange(val) {
       this.tableSelection = val
     },
@@ -193,7 +196,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getList({ in_search: this.in_search }).then(response => {
+      getList({ in_search: this.in_search, page: this.pagination.pageNum, page_size: this.pagination.pageSize }).then(response => {
         this.list = response.data.data
         this.pagination.total = response.data.total
         this.pagination.pageNum = response.data.current_page
@@ -237,7 +240,7 @@ export default {
         const data = {
           id: role.id,
           role_name: role.role_name,
-          remark: role.remark,
+          description: role.description,
           permission: JSON.stringify(role.routes)
         }
         edit(data).then(response => {
@@ -250,7 +253,7 @@ export default {
         const role = this.role
         const data = {
           role_name: role.role_name,
-          remark: role.remark,
+          description: role.description,
           permission: JSON.stringify(role.routes)
         }
         add(data).then(response => {
