@@ -104,7 +104,7 @@
           page: this.pagination.pageNum,
           page_size: this.pagination.pageSize
         }).then(response => {
-          this.list = response.data
+          this.list = response.data.data
           this.listLoading = false
         })
       },

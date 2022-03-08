@@ -14,8 +14,8 @@
             <div class="header">
               <el-image
                 class="header-img"
-                :preview-src-list="[item.image_path]"
-                :src="item.image_path"
+                :preview-src-list="[item.file_path]"
+                :src="item.file_path"
                 fit="fill"
               />
             </div>
@@ -47,11 +47,12 @@
             class="avatar-uploader"
             :data="noticeModel"
             :headers="headers"
-            name="image"
-            :action="dialogType === 'edit' ? APiBefore+'/carousel/edit' : APiBefore+'/carousel/add'"
+            name="file"
+            :action="dialogType === 'edit' ? APiBefore+'/FileCarousel/edit' : APiBefore+'/FileCarousel/add'"
             :show-file-list="false"
             :auto-upload="false"
             :on-change="changeUpload"
+            :on-success='fetchData'
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" :style="{ width: device == 'mobile' ? '50vw' : '30vw' }">
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -134,7 +135,7 @@ export default {
     handleEditClick(item) {
       this.noticeModel = item
       this.noticeModel.image = null
-      this.imageUrl = item.image_path
+      this.imageUrl = item.file_path
       this.dialogType = 'edit'
       this.dialogVisible = true
     },

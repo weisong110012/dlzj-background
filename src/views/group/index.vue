@@ -5,7 +5,7 @@
       <!-- <el-menu class="group-menu" @select='handleSelect' @open='handleSelect'>
         <sidebar-items v-for='(item , key) in listTree' :key='key' :item="item" />
       </el-menu> -->
-      <el-tree :data="listTree" :props="{ children: 'children', label: 'name' }" node-key="id"
+      <el-tree :data="listTree" :props="{ children: 'children', label: 'name' }" node-key="id" accordion
         @node-contextmenu="rightClick" @node-click="handlClick"></el-tree>
       <div v-show="menuVisible">
         <div id="menu" class="menu">
@@ -13,6 +13,46 @@
           <div class="menu_item delete" @click="handleTreeDeleteClick()">删除</div>
         </div>
       </div>
+    </div>
+    <div class="group-main">
+      <el-card class="box-card">
+        <el-row style="text-align: right;padding-bottom: 18px;">
+          <el-button type="primary">分配用户</el-button>
+        </el-row>
+        <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+          <el-table-column label="姓名" align="center">
+            <template slot-scope="scope">
+              <span>测试</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="部门" align="center">
+            <template slot-scope="scope">
+              <span>{{selectIndex.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="created_at" label="手机号">
+            <template slot-scope="scope">
+              <span>{{ scope.row.phone }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作" width="200">
+            <template v-if="scope.row.id!=1" slot-scope="scope">
+              <el-popconfirm
+                title="确定要开除此员工吗？"
+                confirm-button-text="开除"
+                icon="el-icon-info"
+                icon-color="red"
+                @confirm="handleDeleteClick([scope.row.id])"
+              >
+                <el-link slot="reference" type="danger" :underline="false">开除</el-link>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="text-align: center;margin-top: 10px;">
+          <el-pagination background hide-on-single-page :page-size="pagination.pageSize" :current-page="pagination.pageNum" layout="prev, pager, next" :total="pagination.total"/>
+        </div>
+      </el-card>
     </div>
     <el-dialog :visible.sync="dialogVisible" :title="dialogType === 'edit' ? '编辑' : '新增'"
       :fullscreen="device == 'mobile'">
@@ -88,11 +128,12 @@
       this.fetchData()
     },
     methods: {
-      handlClick() {},
+      handlClick(obj,Node) {
+        this.selectIndex = Node.data
+      },
       //右键点击
       rightClick(MouseEvent, object, Node, element) {
         this.selectIndex = Node.data
-        console.log(this.selectIndex)
         // 鼠标右击触发事件
         this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
         this.menuVisible = true // 显示模态窗口，跳出自定义菜单栏
@@ -201,6 +242,7 @@
       height: calc(100vh - 101px);
       overflow: auto;
       overflow-x: hidden;
+      padding-top: 6px;
     }
 
     .group-menu {
@@ -244,6 +286,15 @@
           background: #409eff;
         }
       }
+    }
+    .group-main{
+      position: absolute;
+      right: 0;
+      top: 0px;
+      left: 240px;
+      bottom: 0;
+      background: #f2f2f2;
+      overflow-y: auto;
     }
   }
 

@@ -2,35 +2,35 @@ import request from '@/utils/request'
 
 export function getList(data) {
   return request({
-    url: '/document/index',
+    url: '/FileDocument/index',
     method: 'post',
     data
   })
 }
 export function add(data) {
   return request({
-    url: '/order/add',
+    url: '/FileDocument/add',
     method: 'post',
     data
   })
 }
 export function remove(data) {
   return request({
-    url: '/order/remove',
+    url: '/FileDocument/del',
     method: 'post',
     data
   })
 }
 export function edit(data) {
   return request({
-    url: '/document/edit',
+    url: '/FileDocument/edit',
     method: 'post',
     data
   })
 }
 export function getdetail(data) {
   return request({
-    url: '/order/detail',
+    url: '/FileDocument/read',
     method: 'post',
     data
   })
