@@ -69,7 +69,7 @@
             class="avatar-uploader"
             :data="noticeModel"
             :headers="headers"
-            name="image"
+            name="file"
             :action="dialogType === 'edit' ?APiBefore+'/notice/edit':APiBefore+'/notice/add'"
             :show-file-list="false"
             :auto-upload="false"
